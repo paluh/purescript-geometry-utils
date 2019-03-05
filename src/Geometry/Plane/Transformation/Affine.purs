@@ -2,7 +2,8 @@ module Geometry.Plane.Transformation.Affine where
 
 import Geometry (Angle, toRadians)
 import Geometry.Plane.Transformation.Affine.Matrix (Matrix)
-import Geometry.Plane.Vector (Translation, Vector)
+import Geometry.Plane.Translation (Translation)
+import Geometry.Plane.Vector (Vector)
 import Math (Radians)
 
 foreign import rotationImpl ∷ ∀ u. Radians → Matrix u

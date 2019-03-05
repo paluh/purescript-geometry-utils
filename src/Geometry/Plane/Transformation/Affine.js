@@ -33,11 +33,11 @@ exports.scaling = function(r) {
   ];
 };
 
-exports.translate = function(m) {
-  return function(v) {
-    var r = m.slice();
-    r[2] = m[2] + v.x;
-    r[5] = m[5] + v.y;
-    return r;
-  };
-};
+// exports.translate = function(m) {
+//   return function(v) {
+//     var r = m.slice();
+//     r[2] = m[2] + v.x;
+//     r[5] = m[5] + v.y;
+//     return r;
+//   };
+// };
