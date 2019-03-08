@@ -2,22 +2,17 @@ module Geometry.Plane.Point where
 
 import Prelude
 
-import Data.Argonaut (class DecodeJson, class EncodeJson)
-import Data.Argonaut.Decode.Generic.Rep (genericDecodeJson)
-import Data.Argonaut.Encode.Generic.Rep (genericEncodeJson)
 import Data.Generic.Rep (class Generic)
+import Data.Newtype (class Newtype)
+import Geometry.Distance (Distance(..), kind SpaceUnit)
 import Geometry.Plane.Transformation.Affine.Matrix (Matrix) as Affine
 import Geometry.Plane.Transformation.Linear.Matrix (Matrix) as Linear
-import Geometry.SpaceUnit (Distance(..), kind SpaceUnit)
 import Math (pow, sqrt) as Math
 
 newtype Point (unit ∷ SpaceUnit) = Point { x ∷ Number, y ∷ Number }
 derive instance eqPoint ∷ Eq (Point u)
 derive instance genericPoint ∷ Generic (Point u) _
-instance encodeShape ∷ EncodeJson (Point u) where
-  encodeJson = genericEncodeJson
-instance decodeDesign ∷ DecodeJson (Point u) where
-  decodeJson = genericDecodeJson
+derive instance newtypePoint ∷ Newtype (Point u) _
 
 point ∷ ∀ u. Number → Number → Point u
 point x y = Point { x, y }

@@ -2,6 +2,7 @@ module Geometry.Angle where
 
 import Prelude
 
+import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Math (Radians)
 import Math (cos, pi, sin) as Math
@@ -12,6 +13,7 @@ data Angle
 instance eqAngle ∷ Eq Angle where
   eq (Radians r1) (Radians r2) = r1 == r2
   eq a1 a2 = eq (toDegrees a1) (toDegrees a2)
+derive instance genericAngle ∷ Generic Angle _
 
 toRadians :: Angle -> Number
 toRadians (Radians r) = r

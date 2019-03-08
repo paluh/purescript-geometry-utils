@@ -3,12 +3,13 @@ module Geometry.Plane.BoundingBox where
 import Prelude
 
 import Data.Array.NonEmpty (NonEmptyArray)
+import Data.Generic.Rep (class Generic)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
+import Geometry.Distance (kind SpaceUnit)
 import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Vector (Vector(..))
-import Geometry.SpaceUnit (kind SpaceUnit)
 
 newtype BoundingBox (u ∷ SpaceUnit) = BoundingBox
   { height ∷ Number
@@ -16,8 +17,9 @@ newtype BoundingBox (u ∷ SpaceUnit) = BoundingBox
   , x ∷ Number
   , y ∷ Number
   }
-derive instance boundingBoxNewtype ∷ Newtype (BoundingBox u) _
 derive instance eqBoundingBox ∷ Eq (BoundingBox u)
+derive instance genericBoundingBox ∷ Generic (BoundingBox u) _
+derive instance newtypeBoundingBox ∷ Newtype (BoundingBox u) _
 
 fromCorners ∷ ∀ u. { leftTop ∷ Point u, rightBottom ∷ Point u } → BoundingBox u
 fromCorners { leftTop: Point leftTop, rightBottom: Point rightBottom } = BoundingBox

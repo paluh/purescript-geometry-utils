@@ -2,14 +2,18 @@ module Geometry.Plane.Translation where
 
 import Prelude
 
+import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
+import Data.Newtype (class Newtype)
+import Geometry.Distance (Distance(..), kind SpaceUnit)
 import Geometry.Plane.Point (Point(..))
 import Geometry.Plane.Vector (Vector(..))
-import Geometry.SpaceUnit (Distance(..), kind SpaceUnit)
 import Math (sqrt) as Math
 
 newtype Translation (u ∷ SpaceUnit) = Translation Vector
-derive instance eqTranslation :: Eq (Translation u)
+derive instance eqTranslation ∷ Eq (Translation u)
+derive instance genericTranslation ∷ Generic (Translation u) _
+derive instance newtypeTranslation ∷ Newtype (Translation u) _
 derive newtype instance semigroupTranslation ∷ Semigroup (Translation u)
 derive newtype instance monoidTranslation ∷ Monoid (Translation u)
 derive newtype instance groupTranslation ∷ Group (Translation u)

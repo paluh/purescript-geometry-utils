@@ -2,7 +2,7 @@ module Geometry.Plane.Transformation.Affine.Matrix where
 
 import Prelude
 
-import Geometry.SpaceUnit (kind SpaceUnit)
+import Geometry.Distance (kind SpaceUnit)
 
 foreign import data Matrix ∷ SpaceUnit → Type
 
