@@ -8,7 +8,6 @@
   ],
   "dependencies": {
     "purescript-prelude": "^4.1.0",
-    "purescript-effect": "^2.0.1",
     "purescript-math": "^2.1.1",
     "purescript-group": "^4.0.0",
     "purescript-arrays": "^5.2.0",
