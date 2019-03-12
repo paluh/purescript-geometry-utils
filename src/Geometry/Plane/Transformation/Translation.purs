@@ -6,7 +6,7 @@ import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
 import Geometry.Distance (Distance(..), kind SpaceUnit)
-import Geometry.Plane.Point (Point(..))
+import Geometry.Plane.Point.Types (Point(..))
 import Geometry.Plane.Vector (Vector(..))
 import Math (sqrt) as Math
 
