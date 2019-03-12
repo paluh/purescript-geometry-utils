@@ -7,6 +7,7 @@ import Data.Newtype (class Newtype)
 import Geometry.Distance (Distance(..), kind SpaceUnit)
 import Geometry.Plane.Transformation.Affine.Matrix (Matrix) as Affine
 import Geometry.Plane.Transformation.Linear.Matrix (Matrix) as Linear
+import Geometry.Plane.Translation (Translation(..))
 import Math (pow, sqrt) as Math
 
 newtype Point (unit ∷ SpaceUnit) = Point { x ∷ Number, y ∷ Number }
@@ -37,7 +38,7 @@ foreign import linearTransform ∷ ∀ u. Linear.Matrix → Point u → Point u
 
 foreign import affineTransform ∷ ∀ u. Affine.Matrix u → Point u → Point u
 
--- translate ∷ ∀ u. Translation u → Point u → Point u
--- translate (Vector { x, y }) (Point p) =
---   Point { x: p.x + x, y: p.y + y }
+translate ∷ ∀ u. Translation u → Point u → Point u
+translate (Translation (Vector { x, y })) (Point p) =
+  Point { x: p.x + x, y: p.y + y }
 
