@@ -6,6 +6,7 @@ import Data.Array.NonEmpty (NonEmptyArray)
 import Data.Generic.Rep (class Generic)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
+import Geometry (Distance(..))
 import Geometry.Distance (kind SpaceUnit)
 import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
@@ -44,8 +45,8 @@ fromPoints points =
       , rightBottom: point maxX maxY
       }
 
-fromBoundingCircle ∷ ∀ u. Point u → Number → BoundingBox u
-fromBoundingCircle (Point { x, y }) r = BoundingBox
+fromBoundingCircle ∷ ∀ u. Point u → Distance u → BoundingBox u
+fromBoundingCircle (Point { x, y }) (Distance r) = BoundingBox
   { x: x - r
   , y: y - r
   , height: r * 2.0
