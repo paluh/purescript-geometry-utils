@@ -6,13 +6,13 @@ import Geometry.Plane.Translation (Translation)
 import Geometry.Plane.Vector (Vector)
 import Math (Radians)
 
-foreign import rotationImpl ∷ ∀ u. Radians → Matrix u
-
-foreign import fromTranslationImpl ∷ ∀ u. Translation u → Matrix u
-
 foreign import toTranslationImpl ∷ ∀ u. Matrix u → Translation u
 
+foreign import translation ∷ ∀ u. Translation u → Matrix u
+
 foreign import scaling ∷ ∀ u. Vector → Matrix u
+
+foreign import rotationImpl ∷ ∀ u. Radians → Matrix u
 
 rotation ∷ ∀ u. Angle → Matrix u
 rotation a = rotationImpl (toRadians a)
