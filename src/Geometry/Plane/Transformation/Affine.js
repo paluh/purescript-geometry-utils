@@ -2,7 +2,7 @@
 
 "use strict";
 
-exports.toTranslationImpl = function(r) {
+exports.translation = function(r) {
   return [
     1, 0, r.x,
     0, 1, r.y,
@@ -10,7 +10,7 @@ exports.toTranslationImpl = function(r) {
   ];
 }
 
-exports.translation = function(m) {
+exports.toTranslationImpl = function(m) {
   return {
     x: m[2],
     y: m[5]
