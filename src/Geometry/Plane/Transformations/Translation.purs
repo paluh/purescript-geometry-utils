@@ -1,4 +1,4 @@
-module Geometry.Plane.Translation where
+module Geometry.Plane.Transformations.Translation where
 
 import Prelude
 

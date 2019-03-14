@@ -1,4 +1,4 @@
-module Geometry.Plane.Transformation.Affine.Matrix where
+module Geometry.Plane.Transformations.Affine.Matrix where
 
 import Prelude
 

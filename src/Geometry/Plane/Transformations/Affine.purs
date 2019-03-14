@@ -1,8 +1,8 @@
-module Geometry.Plane.Transformation.Affine where
+module Geometry.Plane.Transformations.Affine where
 
 import Geometry (Angle, toRadians)
-import Geometry.Plane.Transformation.Affine.Matrix (Matrix)
-import Geometry.Plane.Translation (Translation)
+import Geometry.Plane.Transformations.Affine.Matrix (Matrix)
+import Geometry.Plane.Transformations.Translation (Translation)
 import Geometry.Plane.Vector (Vector)
 import Math (Radians)
 

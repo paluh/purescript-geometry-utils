@@ -11,9 +11,9 @@ import Prelude
 import Geometry.Distance (Distance(..), kind SpaceUnit)
 import Geometry.Plane.Point.Types (_x, _y, _xD, _yD, point, Point(..)) as Types
 import Geometry.Plane.Point.Types (Point(..))
-import Geometry.Plane.Transformation.Affine.Matrix (Matrix) as Affine
-import Geometry.Plane.Transformation.Linear.Matrix (Matrix) as Linear
-import Geometry.Plane.Translation (Translation(..))
+import Geometry.Plane.Transformations.Affine.Matrix (Matrix) as Affine
+import Geometry.Plane.Transformations.Linear.Matrix (Matrix) as Linear
+import Geometry.Plane.Transformations.Translation (Translation(..))
 import Geometry.Plane.Vector.Types (Vector(..))
 import Math (pow, sqrt) as Math
 
