@@ -74,8 +74,8 @@ corners (BoundingBox { x, y, height: Distance height, width: Distance width }) =
   , leftBottom: point x (y + height)
   }
 
-addPadding ∷ ∀ u. Number → BoundingBox u → BoundingBox u
-addPadding p (BoundingBox bb@{ height: Distance h, width: Distance w}) =
+addPadding ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
+addPadding (Distance p) (BoundingBox bb@{ height: Distance h, width: Distance w}) =
   let
     height = Distance $ 2.0 * p + h
     width = Distance $ 2.0 * p + w

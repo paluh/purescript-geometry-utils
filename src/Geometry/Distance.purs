@@ -1,4 +1,13 @@
-module Geometry.Distance where
+module Geometry.Distance
+  ( kind SpaceUnit
+  , ConversionFactor(..)
+  , Distance(..)
+  , convert
+  , ratio
+  , scale
+  , unsafeScale
+  )
+  where
 
 import Prelude
 
