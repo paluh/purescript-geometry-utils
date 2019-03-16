@@ -13,8 +13,8 @@ import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Vector (Vector(..))
 
 newtype BoundingBox (u ∷ SpaceUnit) = BoundingBox
-  { height ∷ Number
-  , width ∷ Number
+  { height ∷ Distance u
+  , width ∷ Distance u
   , x ∷ Number
   , y ∷ Number
   }
@@ -26,8 +26,8 @@ fromCorners ∷ ∀ u. { leftTop ∷ Point u, rightBottom ∷ Point u } → Boun
 fromCorners { leftTop: Point leftTop, rightBottom: Point rightBottom } = BoundingBox
   { x: leftTop.x
   , y: leftTop.y
-  , width: rightBottom.x - leftTop.x
-  , height: rightBottom.y - leftTop.y
+  , width: Distance (rightBottom.x - leftTop.x)
+  , height: Distance (rightBottom.y - leftTop.y)
   }
 
 fromPoints ∷ ∀ u. NonEmptyArray (Point u) → BoundingBox u
@@ -49,23 +49,25 @@ fromBoundingCircle ∷ ∀ u. Point u → Distance u → BoundingBox u
 fromBoundingCircle (Point { x, y }) (Distance r) = BoundingBox
   { x: x - r
   , y: y - r
-  , height: r * 2.0
-  , width: r * 2.0
+  , height: Distance (r * 2.0)
+  , width: Distance (r * 2.0)
   }
 
 intersection ∷ ∀ u. BoundingBox u → BoundingBox u → Boolean
-intersection (BoundingBox r1) (BoundingBox r2) = not
-  ( r2.x > r1.x + r1.width
-  || r1.x > r2.x + r2.width
-  || r2.y > r1.y + r1.height
-  || r1.y > r2.y + r2.height
-  )
+intersection
+  (BoundingBox r1@{ height: Distance h1, width: Distance w1 })
+  (BoundingBox r2@{ height: Distance h2, width: Distance w2 }) = not
+    ( r2.x > r1.x + w1
+    || r1.x > r2.x + w2
+    || r2.y > r1.y + h1
+    || r1.y > r2.y + h2
+    )
 
 corners
   ∷ ∀ u
   . BoundingBox u
   → { leftTop ∷ Point u , rightTop ∷ Point u, rightBottom ∷ Point u, leftBottom ∷ Point u }
-corners (BoundingBox { x, y, height, width }) =
+corners (BoundingBox { x, y, height: Distance height, width: Distance width }) =
   { leftTop: point x y
   , rightTop: point (x + width) y
   , rightBottom: point (x + width) (y + height)
@@ -73,10 +75,10 @@ corners (BoundingBox { x, y, height, width }) =
   }
 
 addPadding ∷ ∀ u. Number → BoundingBox u → BoundingBox u
-addPadding p (BoundingBox bb) =
+addPadding p (BoundingBox bb@{ height: Distance h, width: Distance w}) =
   let
-    height = 2.0 * p + bb.height
-    width = 2.0 * p + bb.width
+    height = Distance $ 2.0 * p + h
+    width = Distance $ 2.0 * p + w
   in BoundingBox
     { x: bb.x - p
     , y: bb.y - p
@@ -85,7 +87,8 @@ addPadding p (BoundingBox bb) =
     }
 
 center ∷ ∀ u. BoundingBox u → Point u
-center (BoundingBox { height, width, x, y }) = point ( x + width / 2.0) (y + height / 2.0)
+center (BoundingBox { height: Distance height, width: Distance width, x, y }) =
+  point ( x + width / 2.0) (y + height / 2.0)
 
 instance semigroup ∷ Semigroup (BoundingBox u) where
   append bb1 bb2 =
