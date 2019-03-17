@@ -1,4 +1,4 @@
-module Geometry.Positive where
+module Geometry.Numbers where
 
 import Prelude
 

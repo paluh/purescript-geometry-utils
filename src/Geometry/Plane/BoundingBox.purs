@@ -12,6 +12,8 @@ import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Vector (Vector(..))
 
+-- | XXX: Maybe this whole representation should be changed to something like:
+-- |  { position ∷ Point u, dimentions ∷ Dimentions u }
 newtype BoundingBox (u ∷ SpaceUnit) = BoundingBox
   { height ∷ Distance u
   , width ∷ Distance u
@@ -22,6 +24,21 @@ derive instance eqBoundingBox ∷ Eq (BoundingBox u)
 derive instance genericBoundingBox ∷ Generic (BoundingBox u) _
 derive instance newtypeBoundingBox ∷ Newtype (BoundingBox u) _
 
+instance semigroup ∷ Semigroup (BoundingBox u) where
+  append bb1 bb2 =
+    let
+      c1 = corners bb1
+      c2 = corners bb2
+      leftTop = point
+        (min (_x c1.leftTop) (_x c2.leftTop))
+        (min (_y c1.leftTop) (_y c2.leftTop))
+      rightBottom = point
+        (max (_x c1.rightBottom) (_x c2.rightBottom))
+        (max (_y c1.rightBottom) (_y c2.rightBottom))
+    in
+      fromCorners { leftTop, rightBottom }
+
+-- | XXX: We assume y axis direction here by some names etc.
 fromCorners ∷ ∀ u. { leftTop ∷ Point u, rightBottom ∷ Point u } → BoundingBox u
 fromCorners { leftTop: Point leftTop, rightBottom: Point rightBottom } = BoundingBox
   { x: leftTop.x
@@ -89,16 +106,6 @@ addPadding (Distance p) (BoundingBox bb@{ height: Distance h, width: Distance w}
 center ∷ ∀ u. BoundingBox u → Point u
 center (BoundingBox { height: Distance height, width: Distance width, x, y }) =
   point ( x + width / 2.0) (y + height / 2.0)
-
-instance semigroup ∷ Semigroup (BoundingBox u) where
-  append bb1 bb2 =
-    let
-      c1 = corners bb1
-      c2 = corners bb2
-      leftTop = point (min (_x c1.leftTop) (_x c2.leftTop)) (min (_y c1.leftTop) (_y c2.leftTop))
-      rightBottom = point (max (_x c1.rightBottom) (_x c2.rightBottom)) (max (_y c1.rightBottom) (_y c2.rightBottom))
-    in
-      fromCorners { leftTop, rightBottom }
 
 translate ∷ ∀ u. Vector → BoundingBox u → BoundingBox u
 translate (Vector v) (BoundingBox bb) =

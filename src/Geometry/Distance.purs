@@ -12,7 +12,7 @@ module Geometry.Distance
 import Prelude
 
 import Data.Generic.Rep (class Generic)
-import Geometry.Positive (NonNegative(..))
+import Geometry.Numbers (NonNegative(..))
 
 foreign import kind SpaceUnit
 
