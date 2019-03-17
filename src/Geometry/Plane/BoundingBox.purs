@@ -12,6 +12,11 @@ import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Vector (Vector(..))
 
+type Dimentions u =
+  { height ∷ Distance u
+  , width ∷ Distance u
+  }
+
 -- | XXX: Maybe this whole representation should be changed to something like:
 -- |  { position ∷ Point u, dimentions ∷ Dimentions u }
 newtype BoundingBox (u ∷ SpaceUnit) = BoundingBox
