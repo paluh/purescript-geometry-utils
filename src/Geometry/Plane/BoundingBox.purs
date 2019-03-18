@@ -10,6 +10,7 @@ import Geometry (Distance(..))
 import Geometry.Distance (kind SpaceUnit)
 import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
+import Geometry.Plane.Transformations.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
 
 type Dimentions u =
@@ -112,6 +113,6 @@ center ∷ ∀ u. BoundingBox u → Point u
 center (BoundingBox { height: Distance height, width: Distance width, x, y }) =
   point ( x + width / 2.0) (y + height / 2.0)
 
-translate ∷ ∀ u. Vector → BoundingBox u → BoundingBox u
-translate (Vector v) (BoundingBox bb) =
+translate ∷ ∀ u. Translation u → BoundingBox u → BoundingBox u
+translate (Translation (Vector v)) (BoundingBox bb) =
   BoundingBox (bb { x = bb.x + v.x, y = bb.y + v.y })

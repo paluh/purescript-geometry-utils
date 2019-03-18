@@ -1,6 +1,6 @@
 module Geometry.Plane.Transformations.Affine where
 
-import Geometry (Angle, toRadians)
+import Geometry.Angle (Angle, toRadians)
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix)
 import Geometry.Plane.Transformations.Translation (Translation)
 import Geometry.Plane.Vector (Vector)
@@ -16,7 +16,4 @@ foreign import rotationImpl ∷ ∀ u. Radians → Matrix u
 
 rotation ∷ ∀ u. Angle → Matrix u
 rotation a = rotationImpl (toRadians a)
-
--- | XXX: Do we really need this strage optimization
--- foreign import translate ∷ Matrix → Vector → Matrix
 

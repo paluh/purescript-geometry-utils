@@ -1,5 +1,5 @@
 module Geometry.Distance
-  ( kind SpaceUnit
+  ( module Units
   , ConversionFactor(..)
   , Distance(..)
   , convert
@@ -13,8 +13,8 @@ import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Geometry.Numbers (NonNegative(..))
-
-foreign import kind SpaceUnit
+import Geometry.Distance.Units (kind SpaceUnit) as Units
+import Geometry.Distance.Units (kind SpaceUnit)
 
 -- | XXX: You should probably write constructor functions
 -- |      which construt exactly typed version of `Distance`.

@@ -1,6 +1,6 @@
-module Geometry.Units where
+module Geometry.Distance.Units where
 
-import Geometry.Distance (kind SpaceUnit)
+foreign import kind SpaceUnit
 
 foreign import data Real ∷ SpaceUnit
 foreign import data Pixel ∷ SpaceUnit
