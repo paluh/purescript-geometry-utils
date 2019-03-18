@@ -16,8 +16,8 @@ import Geometry.Numbers (NonNegative(..))
 import Geometry.Distance.Units (kind SpaceUnit) as Units
 import Geometry.Distance.Units (kind SpaceUnit)
 
--- | XXX: You should probably write constructor functions
--- |      which construt exactly typed version of `Distance`.
+-- | XXX: For every unit you should probably define your own
+-- |  monomorphic constructor.
 newtype Distance (unit ∷ SpaceUnit) = Distance Number
 derive instance eqDistance ∷ Eq (Distance u)
 derive instance ordDistance ∷ Ord (Distance u)

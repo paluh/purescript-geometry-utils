@@ -1,5 +1,7 @@
 module Geometry.Plane.Transformations.Linear
   ( module Matrix
+  , rotation
+  , scaling
   ) where
 
 

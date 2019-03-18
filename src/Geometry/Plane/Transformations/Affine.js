@@ -10,7 +10,7 @@ exports.translation = function(r) {
   ];
 }
 
-exports.toTranslationImpl = function(m) {
+exports.toTranslation = function(m) {
   return {
     x: m[2],
     y: m[5]

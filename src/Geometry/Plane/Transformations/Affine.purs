@@ -1,12 +1,19 @@
-module Geometry.Plane.Transformations.Affine where
+module Geometry.Plane.Transformations.Affine
+  ( module Matrix
+  , rotation
+  , scaling
+  , toTranslation
+  , translation
+  )where
 
 import Geometry.Angle (Angle, toRadians)
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix)
+import Geometry.Plane.Transformations.Affine.Matrix (Matrix) as Matrix
 import Geometry.Plane.Transformations.Translation (Translation)
 import Geometry.Plane.Vector (Vector)
 import Math (Radians)
 
-foreign import toTranslationImpl ∷ ∀ u. Matrix u → Translation u
+foreign import toTranslation ∷ ∀ u. Matrix u → Translation u
 
 foreign import translation ∷ ∀ u. Translation u → Matrix u
 
