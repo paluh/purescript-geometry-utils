@@ -3,6 +3,7 @@ module Geometry.Distance
   , ConversionFactor(..)
   , Distance(..)
   , convert
+  , inverse
   , ratio
   , scale
   , unsafeScale
