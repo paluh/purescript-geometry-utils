@@ -12,9 +12,9 @@ module Geometry.Distance
 import Prelude
 
 import Data.Generic.Rep (class Generic)
-import Geometry.Numbers (NonNegative(..))
-import Geometry.Distance.Units (kind SpaceUnit) as Units
 import Geometry.Distance.Units (kind SpaceUnit)
+import Geometry.Distance.Units (kind SpaceUnit) as Units
+import Geometry.Numbers (NonNegative(..))
 
 -- | XXX: For every unit you should probably define your own
 -- |  monomorphic constructor.
@@ -42,3 +42,6 @@ newtype ConversionFactor (from ∷ SpaceUnit) (to ∷ SpaceUnit) = ConversionFac
 
 convert ∷ ∀ from to. ConversionFactor from to → Distance from → Distance to
 convert (ConversionFactor c) (Distance d) = Distance (c * d)
+
+inverse ∷ ∀ from to. ConversionFactor from to → ConversionFactor to from
+inverse (ConversionFactor c) = ConversionFactor (1.0 / c)
