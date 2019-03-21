@@ -17,7 +17,7 @@ exports.toTranslation = function(m) {
   }
 }
 
-exports.rotationImpl = function(radians) {
+exports.rotation = function(radians) {
   return [
     Math.cos(radians), -Math.sin(radians), 0,
     Math.sin(radians), Math.cos(radians), 0,

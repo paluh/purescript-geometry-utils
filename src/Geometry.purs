@@ -4,5 +4,5 @@ module Geometry
   )
   where
 
-import Geometry.Angle (Angle(..), toRadians, toDegrees) as Angle
+import Geometry.Angle (Angle(..), fromDegrees) as Angle
 import Geometry.Distance (Distance(..), kind SpaceUnit) as Distance

@@ -2,7 +2,7 @@
 
 "use strict";
 
-exports.rotationImpl = function(radians) {
+exports.rotation = function(radians) {
   return [
     Math.cos(radians), -Math.sin(radians),
     Math.sin(radians), Math.cos(radians)

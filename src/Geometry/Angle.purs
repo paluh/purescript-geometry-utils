@@ -1,4 +1,8 @@
-module Geometry.Angle where
+module Geometry.Angle
+  ( Angle(..)
+  , fromDegrees
+  )
+  where
 
 import Prelude
 
@@ -7,55 +11,33 @@ import Data.Group (class Group)
 import Math (Radians)
 import Math (cos, pi, sin) as Math
 
-data Angle
-  = Radians Radians
-  | Degrees Number
+newtype Angle = Angle Radians
+
 instance eqAngle ∷ Eq Angle where
-  eq (Radians r1) (Radians r2) = r1 == r2
-  eq a1 a2 = eq (toDegrees a1) (toDegrees a2)
+  eq (Angle r1) (Angle r2) = r1 == r2
 derive instance genericAngle ∷ Generic Angle _
 
-toRadians :: Angle -> Number
-toRadians (Radians r) = r
-toRadians (Degrees d) = d * Math.pi / 180.0
-
-toDegrees :: Angle -> Number
-toDegrees (Radians r) = r * 180.0 / Math.pi
-toDegrees (Degrees d) = d
-
 instance semigroupAngle ∷ Semigroup Angle where
-  append (Degrees d1) (Degrees d2) = Degrees (d1 + d2)
-  append (Radians r1) (Radians r2) = Radians (r1 + r2)
-  append angle1 angle2 = Radians (toRadians angle1) <> Radians (toRadians angle2)
+  append (Angle r1) (Angle r2) = Angle (r1 + r2)
 
 instance monoidAngle ∷ Monoid Angle where
-  mempty = Radians 0.0
+  mempty = Angle 0.0
 
 instance groupAngle ∷ Group Angle where
-  ginverse (Degrees d1) = Degrees (-d1)
-  ginverse (Radians d1) = Radians (-d1)
+  ginverse (Angle r) = Angle (-r)
+
+fromDegrees ∷ Number -> Angle
+fromDegrees d = Angle (d / 180.0 * Math.pi)
 
 scale ∷ Number → Angle → Angle
-scale n (Radians r) = Radians (n * r)
-scale n (Degrees d) = Degrees (n * d)
+scale n (Angle r) = Angle (n * r)
 
 cos ∷ Angle → Number
-cos (Radians r) = Math.cos r
-cos a = Math.cos (toRadians a)
+cos (Angle r) = Math.cos r
 
 sin ∷ Angle → Number
-sin (Radians r) = Math.sin r
-sin a = Math.sin (toRadians a)
+sin (Angle r) = Math.sin r
 
 pi ∷ Angle
-pi = Radians Math.pi
-
-twoPi ∷ Angle
-twoPi = Radians (Math.pi * 2.0)
-
-piHalf ∷ Angle
-piHalf = Radians (Math.pi / 2.0)
-
-piFourth ∷ Angle
-piFourth = Radians (Math.pi / 4.0)
+pi = Angle Math.pi
 
