@@ -15,7 +15,7 @@ import Prelude
 import Data.Generic.Rep (class Generic)
 import Geometry.Distance.Units (kind SpaceUnit)
 import Geometry.Distance.Units (kind SpaceUnit) as Units
-import Geometry.Numbers (NonNegative(..))
+import Geometry.Numbers (Natural(..))
 
 -- | XXX: For every unit you should probably define your own
 -- |  monomorphic constructor.
@@ -30,8 +30,8 @@ instance semigroupDistance ∷ Semigroup (Distance u) where
 instance monoidDistance ∷ Monoid (Distance u) where
   mempty = Distance 0.0
 
-scale ∷ ∀ u. Distance u → NonNegative → Distance u
-scale (Distance d) (NonNegative n) = Distance (d * n)
+scale ∷ ∀ u. Distance u → Natural → Distance u
+scale (Distance d) (Natural n) = Distance (d * n)
 
 unsafeScale ∷ ∀ u. Distance u → Number → Distance u
 unsafeScale (Distance d) n = Distance (d * n)

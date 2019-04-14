@@ -11,7 +11,9 @@
     "purescript-math": "^2.1.1",
     "purescript-group": "^4.0.0",
     "purescript-arrays": "^5.2.0",
-    "purescript-generics-rep": "^6.1.1"
+    "purescript-generics-rep": "^6.1.1",
+    "purescript-typelevel": "^5.0.0",
+    "purescript-integers": "^4.0.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^4.0.0"
