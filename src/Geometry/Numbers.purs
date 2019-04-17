@@ -17,8 +17,8 @@ positive n = if n > 0.0
   then Just (Positive n)
   else Nothing
 
-fromPos ∷ ∀ n. Pos n ⇒ Proxy n → Positive
-fromPos = Positive <<< toNumber <<< toInt'
+refinePos ∷ ∀ n. Pos n ⇒ Proxy n → Positive
+refinePos = Positive <<< toNumber <<< toInt'
 
 unsafePositive ∷ Number → Positive
 unsafePositive = Positive
@@ -32,8 +32,8 @@ natural n = if n >= 0.0
   then Just (Natural n)
   else Nothing
 
-fromNat ∷ ∀ n. Nat n ⇒ Proxy n → Natural
-fromNat = Natural <<< toNumber <<< toInt'
+refineNat ∷ ∀ n. Nat n ⇒ Proxy n → Natural
+refineNat = Natural <<< toNumber <<< toInt'
 
 unsafeNatural ∷ Number → Natural
 unsafeNatural = Natural
