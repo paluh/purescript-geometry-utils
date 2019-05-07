@@ -1,6 +1,10 @@
 module Geometry.Angle
   ( Angle(..)
+  , cos
   , fromDegrees
+  , pi
+  , scale
+  , sin
   )
   where
 
