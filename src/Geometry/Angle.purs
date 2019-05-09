@@ -33,6 +33,9 @@ instance groupAngle ∷ Group Angle where
 fromDegrees ∷ Number -> Angle
 fromDegrees d = Angle (d / 180.0 * Math.pi)
 
+toDegrees ∷ Angle → Number
+toDegrees (Angle a) = a / Math.pi * 180.0
+
 scale ∷ Number → Angle → Angle
 scale n (Angle r) = Angle (n * r)
 
