@@ -5,6 +5,7 @@ module Geometry.Angle
   , pi
   , scale
   , sin
+  , toDegrees
   )
   where
 
