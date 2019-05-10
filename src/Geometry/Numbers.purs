@@ -23,17 +23,17 @@ reflectPos = Positive <<< toNumber <<< toInt'
 unsafePositive ∷ Number → Positive
 unsafePositive = Positive
 
-newtype Natural = Natural Number
-derive instance eqNatural :: Eq Natural
-derive instance ordNatural :: Ord Natural
+newtype NonNegative = NonNegative Number
+derive instance eqNonNegative :: Eq NonNegative
+derive instance ordNonNegative :: Ord NonNegative
 
-natural ∷ Number → Maybe Natural
+natural ∷ Number → Maybe NonNegative
 natural n = if n >= 0.0
-  then Just (Natural n)
+  then Just (NonNegative n)
   else Nothing
 
-reflectNat ∷ ∀ n. Nat n ⇒ Proxy n → Natural
-reflectNat = Natural <<< toNumber <<< toInt'
+reflectNat ∷ ∀ n. Nat n ⇒ Proxy n → NonNegative
+reflectNat = NonNegative <<< toNumber <<< toInt'
 
-unsafeNatural ∷ Number → Natural
-unsafeNatural = Natural
+unsafeNonNegative ∷ Number → NonNegative
+unsafeNonNegative = NonNegative
