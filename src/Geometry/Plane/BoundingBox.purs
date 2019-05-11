@@ -4,14 +4,19 @@ import Prelude
 
 import Data.Array.NonEmpty (NonEmptyArray)
 import Data.Generic.Rep (class Generic)
+import Data.Maybe (Maybe, fromJust)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
-import Geometry.Distance (kind SpaceUnit)
+import Geometry.Distance (fromNonNegative) as Distance
+import Geometry.Distance (fromNonNegative, kind SpaceUnit)
+import Geometry.Numbers (NonNegative(..))
+import Geometry.Numbers (abs, nonNegative) as Numbers
 import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Transformations.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
+import Partial.Unsafe (unsafePartial)
 
 type Dimentions u =
   { height ∷ Distance u
@@ -42,16 +47,18 @@ instance semigroup ∷ Semigroup (BoundingBox u) where
         (max (_x c1.rightBottom) (_x c2.rightBottom))
         (max (_y c1.rightBottom) (_y c2.rightBottom))
     in
-      fromCorners { leftTop, rightBottom }
+      unsafePartial $ fromJust $ fromCorners { leftTop, rightBottom }
 
--- | XXX: We assume y axis direction here by some names etc.
-fromCorners ∷ ∀ u. { leftTop ∷ Point u, rightBottom ∷ Point u } → BoundingBox u
-fromCorners { leftTop: Point leftTop, rightBottom: Point rightBottom } = BoundingBox
-  { x: leftTop.x
-  , y: leftTop.y
-  , width: Distance (rightBottom.x - leftTop.x)
-  , height: Distance (rightBottom.y - leftTop.y)
-  }
+fromCorners ∷ ∀ u. { leftTop ∷ Point u, rightBottom ∷ Point u } → Maybe (BoundingBox u)
+fromCorners { leftTop: Point leftTop, rightBottom: Point rightBottom } = do
+  height ← Distance.fromNonNegative <$> Numbers.nonNegative (rightBottom.y - leftTop.y)
+  width ← Distance.fromNonNegative <$> Numbers.nonNegative (rightBottom.x - leftTop.x)
+  pure $ BoundingBox
+    { x: leftTop.x
+    , y: leftTop.y
+    , width
+    , height
+    }
 
 fromPoints ∷ ∀ u. NonEmptyArray (Point u) → BoundingBox u
 fromPoints points =
@@ -62,24 +69,25 @@ fromPoints points =
     ys = map Point._y points
     minY = minimum ys
     maxY = maximum ys
-  in
-    fromCorners
-      { leftTop: point minX minY
-      , rightBottom: point maxX maxY
-      }
+  in BoundingBox
+    { x: minX
+    , y: minY
+    , width: fromNonNegative (Numbers.abs (maxX - minX))
+    , height: fromNonNegative (Numbers.abs (maxY - minY))
+    }
 
 fromBoundingCircle ∷ ∀ u. Point u → Distance u → BoundingBox u
-fromBoundingCircle (Point { x, y }) (Distance r) = BoundingBox
-  { x: x - r
-  , y: y - r
-  , height: Distance (r * 2.0)
-  , width: Distance (r * 2.0)
+fromBoundingCircle (Point { x, y }) (Distance r@(NonNegative rv)) = BoundingBox
+  { x: x - rv
+  , y: y - rv
+  , height: Distance (r * (NonNegative 2.0))
+  , width: Distance (r * (NonNegative 2.0))
   }
 
 intersection ∷ ∀ u. BoundingBox u → BoundingBox u → Boolean
 intersection
-  (BoundingBox r1@{ height: Distance h1, width: Distance w1 })
-  (BoundingBox r2@{ height: Distance h2, width: Distance w2 }) = not
+  (BoundingBox r1@{ height: Distance (NonNegative h1), width: Distance (NonNegative w1) })
+  (BoundingBox r2@{ height: Distance (NonNegative h2), width: Distance (NonNegative w2) }) = not
     ( r2.x > r1.x + w1
     || r1.x > r2.x + w2
     || r2.y > r1.y + h1
@@ -90,7 +98,7 @@ corners
   ∷ ∀ u
   . BoundingBox u
   → { leftTop ∷ Point u , rightTop ∷ Point u, rightBottom ∷ Point u, leftBottom ∷ Point u }
-corners (BoundingBox { x, y, height: Distance height, width: Distance width }) =
+corners (BoundingBox { x, y, height: Distance (NonNegative height), width: Distance (NonNegative width) }) =
   { leftTop: point x y
   , rightTop: point (x + width) y
   , rightBottom: point (x + width) (y + height)
@@ -98,19 +106,19 @@ corners (BoundingBox { x, y, height: Distance height, width: Distance width }) =
   }
 
 addPadding ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
-addPadding (Distance p) (BoundingBox bb@{ height: Distance h, width: Distance w}) =
+addPadding (Distance p@(NonNegative pv)) (BoundingBox bb@{ height: Distance h, width: Distance w}) =
   let
-    height = Distance $ 2.0 * p + h
-    width = Distance $ 2.0 * p + w
+    height = Distance $ NonNegative 2.0 * p + h
+    width = Distance $ NonNegative 2.0 * p + w
   in BoundingBox
-    { x: bb.x - p
-    , y: bb.y - p
+    { x: bb.x - pv
+    , y: bb.y - pv
     , height
     , width
     }
 
 center ∷ ∀ u. BoundingBox u → Point u
-center (BoundingBox { height: Distance height, width: Distance width, x, y }) =
+center (BoundingBox { height: Distance (NonNegative height), width: Distance (NonNegative width), x, y }) =
   point ( x + width / 2.0) (y + height / 2.0)
 
 translate ∷ ∀ u. Translation u → BoundingBox u → BoundingBox u
