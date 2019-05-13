@@ -18,6 +18,7 @@ exports.addImpl = function(m1) {
   }
 }
 
+// Should we migrate to TypedArray?
 exports.zeroImpl = [
   0, 0, 0,
   0, 0, 0,

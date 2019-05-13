@@ -8,8 +8,8 @@ import Data.Maybe (Maybe, fromJust)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
-import Geometry.Distance (fromNonNegative) as Distance
-import Geometry.Distance (fromNonNegative, kind SpaceUnit)
+import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
+import Geometry.Distance (convert, fromNonNegative) as Distance
 import Geometry.Numbers (NonNegative(..))
 import Geometry.Numbers (abs, nonNegative) as Numbers
 import Geometry.Plane.Point (Point(..), _x, _y, point)
@@ -18,13 +18,13 @@ import Geometry.Plane.Transformations.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
 import Partial.Unsafe (unsafePartial)
 
-type Dimentions u =
+type Dimensions u =
   { height ∷ Distance u
   , width ∷ Distance u
   }
 
 -- | XXX: Maybe this whole representation should be changed to something like:
--- |  { position ∷ Point u, dimentions ∷ Dimentions u }
+-- |  { position ∷ Point u, dimensions ∷ Dimensions u }
 newtype BoundingBox (u ∷ SpaceUnit) = BoundingBox
   { height ∷ Distance u
   , width ∷ Distance u
@@ -124,3 +124,12 @@ center (BoundingBox { height: Distance (NonNegative height), width: Distance (No
 translate ∷ ∀ u. Translation u → BoundingBox u → BoundingBox u
 translate (Translation (Vector v)) (BoundingBox bb) =
   BoundingBox (bb { x = bb.x + v.x, y = bb.y + v.y })
+
+convert ∷ ∀ from to. ConversionFactor from to → BoundingBox from → BoundingBox to
+convert c@(ConversionFactor (NonNegative cv)) (BoundingBox { x, y, height, width }) = BoundingBox
+  { x: cv * x
+  , y: cv * y
+  , height: Distance.convert c height
+  , width: Distance.convert c width
+  }
+
