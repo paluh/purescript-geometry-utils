@@ -10,8 +10,8 @@ import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
 import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
 import Geometry.Distance (convert, fromNonNegative) as Distance
-import Geometry.Numbers (NonNegative(..))
-import Geometry.Numbers (abs, nonNegative) as Numbers
+import Geometry.Numbers.NonNegative (NonNegative(..))
+import Geometry.Numbers.NonNegative (abs, fromNumber) as NonNegative
 import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Transformations.Translation (Translation(..))
@@ -51,8 +51,8 @@ instance semigroup ∷ Semigroup (BoundingBox u) where
 
 fromCorners ∷ ∀ u. { leftTop ∷ Point u, rightBottom ∷ Point u } → Maybe (BoundingBox u)
 fromCorners { leftTop: Point leftTop, rightBottom: Point rightBottom } = do
-  height ← Distance.fromNonNegative <$> Numbers.nonNegative (rightBottom.y - leftTop.y)
-  width ← Distance.fromNonNegative <$> Numbers.nonNegative (rightBottom.x - leftTop.x)
+  height ← Distance.fromNonNegative <$> NonNegative.fromNumber (rightBottom.y - leftTop.y)
+  width ← Distance.fromNonNegative <$> NonNegative.fromNumber (rightBottom.x - leftTop.x)
   pure $ BoundingBox
     { x: leftTop.x
     , y: leftTop.y
@@ -72,8 +72,8 @@ fromPoints points =
   in BoundingBox
     { x: minX
     , y: minY
-    , width: fromNonNegative (Numbers.abs (maxX - minX))
-    , height: fromNonNegative (Numbers.abs (maxY - minY))
+    , width: fromNonNegative (NonNegative.abs (maxX - minX))
+    , height: fromNonNegative (NonNegative.abs (maxY - minY))
     }
 
 fromBoundingCircle ∷ ∀ u. Point u → Distance u → BoundingBox u

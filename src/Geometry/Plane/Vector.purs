@@ -1,5 +1,6 @@
 module Geometry.Plane.Vector
   ( module Types
+  , dot
   , length
   , scale
   , vector

@@ -10,7 +10,7 @@ module Geometry.Plane.Point
 import Prelude
 
 import Geometry.Distance (ConversionFactor(..), Distance, unsafeDistance)
-import Geometry.Numbers (NonNegative(..))
+import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Plane.Point.Types (Point(..))
 import Geometry.Plane.Point.Types (_x, _y, _xD, _yD, point, Point(..)) as Types
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix) as Affine
