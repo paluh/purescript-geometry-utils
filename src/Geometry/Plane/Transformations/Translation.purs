@@ -5,8 +5,9 @@ import Prelude
 import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
-import Geometry.Distance (ConversionFactor(..), Distance, unsafeDistance, kind SpaceUnit)
-import Geometry.Numbers.NonNegative (NonNegative(..))
+import Geometry.Distance (Distance, unsafeDistance, kind SpaceUnit)
+import Geometry.Distance.ConversionFactor (ConversionFactor(..))
+import Geometry.Numbers.Positive (Positive(..))
 import Geometry.Plane.Point.Types (Point(..))
 import Geometry.Plane.Vector (Vector(..))
 import Math (sqrt) as Math
@@ -34,7 +35,7 @@ scale ∷ ∀ u. Number → Translation u → Translation u
 scale s (Translation (Vector { x, y })) = Translation (Vector { x: s * x, y: s * y })
 
 convert ∷ ∀ from to. ConversionFactor from to → Translation from → Translation to
-convert (ConversionFactor (NonNegative c)) (Translation (Vector { x, y })) =
+convert (ConversionFactor (Positive c)) (Translation (Vector { x, y })) =
   Translation (Vector { x: c * x, y: c * y })
 
 toVector ∷ ∀ u. Translation u → Vector

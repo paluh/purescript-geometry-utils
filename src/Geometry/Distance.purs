@@ -1,6 +1,6 @@
 module Geometry.Distance
   ( module Units
-  , ConversionFactor(..)
+  , module ConversionFactor
   , Distance(..)
   , convert
   , distance
@@ -9,7 +9,6 @@ module Geometry.Distance
   , fromPositiveInt
   , fromPositiveNumber
   , toNonNegative
-  , inverse
   , ratio
   , scale
   , unsafeDistance
@@ -21,6 +20,8 @@ import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe)
+import Geometry.Distance.ConversionFactor (ConversionFactor(..))
+import Geometry.Distance.ConversionFactor (ConversionFactor) as ConversionFactor
 import Geometry.Distance.Units (kind SpaceUnit)
 import Geometry.Distance.Units (kind SpaceUnit) as Units
 import Geometry.Integers (Natural, Positive) as Integers
@@ -30,6 +31,7 @@ import Geometry.Numbers (NonNegative, Positive) as Numbers
 import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Numbers.NonNegative (fromNumber, unsafe) as Numbers.NonNegative
 import Geometry.Numbers.Positive (toNonNegative) as Numbers.Positive
+import Geometry.Numbers.Positive (toNonNegative) as Positive
 import Unsafe.Coerce (unsafeCoerce)
 
 -- | XXX: For every unit you should probably define your own
@@ -72,14 +74,9 @@ scale (Distance d) n = Distance (d * n)
 unsafeScale ∷ ∀ u. Distance u → Number → Distance u
 unsafeScale (Distance d) n = Distance (d * (Numbers.NonNegative.unsafe n))
 
-ratio ∷ ∀ u. Distance u → Distance u → Number
-ratio (Distance (NonNegative d1)) (Distance (NonNegative d2)) = d1 / d2
-
-newtype ConversionFactor (from ∷ SpaceUnit) (to ∷ SpaceUnit) = ConversionFactor NonNegative
+ratio ∷ ∀ u. Distance u → Distance u → NonNegative
+ratio (Distance (NonNegative d1)) (Distance (NonNegative d2)) = NonNegative (d1 / d2)
 
 convert ∷ ∀ from to. ConversionFactor from to → Distance from → Distance to
-convert (ConversionFactor c) (Distance d) = Distance (c * d)
-
-inverse ∷ ∀ from to. ConversionFactor from to → ConversionFactor to from
-inverse (ConversionFactor (NonNegative c)) = ConversionFactor (NonNegative (1.0 / c))
+convert (ConversionFactor c) (Distance d) = Distance ((Positive.toNonNegative c) * d)
 

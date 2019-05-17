@@ -31,6 +31,9 @@ reflectNat = Natural <<< toInt'
 unsafeNatural ∷ Int → Natural
 unsafeNatural = Natural
 
+toInt ∷ Natural → Int
+toInt (Natural n) = n
+
 foldableLength ∷ ∀ a f. Foldable f ⇒ f a → Natural
 foldableLength f = Natural $ length f
 

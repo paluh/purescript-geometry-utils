@@ -8,10 +8,12 @@ import Data.Maybe (Maybe, fromJust)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
-import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
+import Geometry.Distance (fromNonNegative, kind SpaceUnit)
 import Geometry.Distance (convert, fromNonNegative) as Distance
+import Geometry.Distance.ConversionFactor (ConversionFactor(..))
 import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Numbers.NonNegative (abs, fromNumber) as NonNegative
+import Geometry.Numbers.Positive (Positive(..))
 import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Transformations.Translation (Translation(..))
@@ -126,7 +128,7 @@ translate (Translation (Vector v)) (BoundingBox bb) =
   BoundingBox (bb { x = bb.x + v.x, y = bb.y + v.y })
 
 convert ∷ ∀ from to. ConversionFactor from to → BoundingBox from → BoundingBox to
-convert c@(ConversionFactor (NonNegative cv)) (BoundingBox { x, y, height, width }) = BoundingBox
+convert c@(ConversionFactor (Positive cv)) (BoundingBox { x, y, height, width }) = BoundingBox
   { x: cv * x
   , y: cv * y
   , height: Distance.convert c height
