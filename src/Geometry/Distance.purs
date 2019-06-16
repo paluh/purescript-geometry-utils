@@ -12,7 +12,7 @@ module Geometry.Distance
   , toNumber
   , ratio
   , scale
-  , unsafeDistance
+  , unsafe
   , unsafeScale
   )
   where
@@ -66,8 +66,8 @@ distance = map Distance <<< Numbers.NonNegative.fromNumber
 toNumber ∷ ∀ u. Distance u → Number
 toNumber (Distance (NonNegative n)) = n
 
-unsafeDistance ∷ ∀ u. Number → Distance u
-unsafeDistance n = unsafeCoerce n
+unsafe ∷ ∀ u. Number → Distance u
+unsafe n = unsafeCoerce n
 
 toNonNegative ∷ ∀ u. Distance u → Numbers.NonNegative
 toNonNegative (Distance n) = n
@@ -75,8 +75,8 @@ toNonNegative (Distance n) = n
 scale ∷ ∀ u. Distance u → Numbers.NonNegative → Distance u
 scale (Distance d) n = Distance (d * n)
 
-unsafeScale ∷ ∀ u. Distance u → Number → Distance u
-unsafeScale (Distance d) n = Distance (d * (Numbers.NonNegative.unsafe n))
+unsafeScale ∷ ∀ u. Number → Distance u → Distance u
+unsafeScale n (Distance d) = Distance (d * (Numbers.NonNegative.unsafe n))
 
 ratio ∷ ∀ u. Distance u → Distance u → NonNegative
 ratio (Distance (NonNegative d1)) (Distance (NonNegative d2)) = NonNegative (d1 / d2)

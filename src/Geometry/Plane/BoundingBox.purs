@@ -122,8 +122,8 @@ corners (BoundingBox { x, y, height: Distance (NonNegative height), width: Dista
 addPadding ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
 addPadding p@(Distance (NonNegative pv)) (BoundingBox bb@{ height, width, x, y }) =
   let
-    height' = (Distance.unsafeScale p 2.0) <> height
-    width' = (Distance.unsafeScale p 2.0) <> width
+    height' = (Distance.unsafeScale 2.0 p) <> height
+    width' = (Distance.unsafeScale 2.0 p) <> width
   in BoundingBox
     { x: x - pv
     , y: y - pv

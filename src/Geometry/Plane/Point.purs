@@ -10,8 +10,8 @@ module Geometry.Plane.Point
 
 import Prelude
 
-import Geometry.Distance (Distance, unsafeDistance)
-import Geometry.Distance (unsafeDistance) as Distance
+import Geometry.Distance (Distance)
+import Geometry.Distance (unsafe) as Distance
 import Geometry.Distance.ConversionFactor (ConversionFactor(..))
 import Geometry.Matrix.Matrix2x2 (Matrix, array) as Matrix2x2
 import Geometry.Numbers.Positive (Positive(..))
@@ -26,10 +26,10 @@ import Partial.Unsafe (unsafePartial)
 
 distance ∷ ∀ u. Point u → Point u → Distance u
 distance (Point { x: x1, y: y1 }) (Point { x: x2, y: y2 }) =
-  unsafeDistance $ Math.sqrt (Math.pow (x2 - x1) 2.0 + Math.pow (y2 - y1) 2.0)
+  Distance.unsafe $ Math.sqrt (Math.pow (x2 - x1) 2.0 + Math.pow (y2 - y1) 2.0)
 
 distance' ∷ ∀ u. Point u → Distance u
-distance' (Point { x, y }) = Distance.unsafeDistance $ Math.sqrt (x * x + y * y)
+distance' (Point { x, y }) = Distance.unsafe $ Math.sqrt (x * x + y * y)
 
 linearTransform ∷ ∀ u. Matrix2x2.Matrix → Point u → Point u
 linearTransform m (Point { x, y }) = unsafePartial $
