@@ -1,5 +1,7 @@
 module Geometry.Plane.Transformations.Affine.Matrix
   ( Matrix
+  , array
+  , matrix3x3
   , unsafe
   )
   where
