@@ -39,6 +39,16 @@ unsafeAdd = unsafePartial $ case _, _ of
         , a31 + b31, a32 + b32, a33 + b33
         ]
 
+unsafeSub ∷ Matrix → Matrix → Matrix
+unsafeSub = unsafePartial $ case _, _ of
+    Matrix [ a11, a12, a13, a21, a22, a23, a31, a32, a33 ]
+  , Matrix [ b11, b12, b13 , b21, b22, b23 , b31, b32, b33 ] →
+      Matrix
+        [ a11 - b11, a12 - b12, a13 - b13
+        , a21 - b21, a22 - b22, a23 - b23
+        , a31 - b31, a32 - b32, a33 - b33
+        ]
+
 unsafeMul ∷ Matrix → Matrix → Matrix
 unsafeMul = unsafePartial $ case _, _ of
     Matrix [ a11, a12, a13, a21, a22, a23, a31, a32, a33 ]
@@ -56,14 +66,4 @@ unsafeMul = unsafePartial $ case _, _ of
           , a31 * b12 + a32 * b22 + a33 * b32
           , a31 * b13 + a32 * b23 + a33 * b33
           ]
-
-unsafeSub ∷ Matrix → Matrix → Matrix
-unsafeSub = unsafePartial $ case _, _ of
-    Matrix [ a11, a12, a13, a21, a22, a23, a31, a32, a33 ]
-  , Matrix [ b11, b12, b13 , b21, b22, b23 , b31, b32, b33 ] →
-      Matrix
-        [ a11 - b11, a12 - b12, a13 - b13
-        , a21 - b21, a22 - b22, a23 - b23
-        , a31 - b31, a32 - b32, a33 - b33
-        ]
 
