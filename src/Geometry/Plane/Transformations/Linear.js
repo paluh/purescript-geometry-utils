@@ -4,7 +4,7 @@
 
 exports.rotation = function(radians) {
   return [
-    Math.cos(radians), -Math.sin(radians),
+    Math.cos(radians), -1.0 * Math.sin(radians),
     Math.sin(radians), Math.cos(radians)
   ];
 };

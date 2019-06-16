@@ -32,10 +32,10 @@ instance groupAngle ∷ Group Angle where
   ginverse (Angle r) = Angle (-r)
 
 fromDegrees ∷ Number -> Angle
-fromDegrees d = Angle (d / 180.0 * Math.pi)
+fromDegrees d = Angle ((d * Math.pi) / 180.0)
 
 toDegrees ∷ Angle → Number
-toDegrees (Angle a) = a / Math.pi * 180.0
+toDegrees (Angle a) = (a * 180.0) / Math.pi
 
 scale ∷ Number → Angle → Angle
 scale n (Angle r) = Angle (n * r)
@@ -48,4 +48,3 @@ sin (Angle r) = Math.sin r
 
 pi ∷ Angle
 pi = Angle Math.pi
-

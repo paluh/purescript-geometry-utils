@@ -12,7 +12,7 @@ import Prelude
 import Data.Maybe (Maybe(..))
 import Geometry.Distance (kind SpaceUnit)
 import Geometry.Plane.Vector.Types (Vector(..))
-import Geometry.Plane.Vector.Types (Vector(..)) as Types
+import Geometry.Plane.Vector.Types (Vector(..), _x, _y) as Types
 import Math (sqrt) as Math
 
 vector ∷ Number → Number → Vector

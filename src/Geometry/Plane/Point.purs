@@ -2,6 +2,7 @@ module Geometry.Plane.Point
   ( module Types
   , convert
   , distance
+  , distance'
   , linearTransform
   , affineTransform
   , translate
@@ -10,6 +11,7 @@ module Geometry.Plane.Point
 import Prelude
 
 import Geometry.Distance (Distance, unsafeDistance)
+import Geometry.Distance (unsafeDistance) as Distance
 import Geometry.Distance.ConversionFactor (ConversionFactor(..))
 import Geometry.Numbers.Positive (Positive(..))
 import Geometry.Plane.Point.Types (Point(..))
@@ -23,6 +25,9 @@ import Math (pow, sqrt) as Math
 distance ∷ ∀ u. Point u → Point u → Distance u
 distance (Point { x: x1, y: y1 }) (Point { x: x2, y: y2 }) =
   unsafeDistance $ Math.sqrt (Math.pow (x2 - x1) 2.0 + Math.pow (y2 - y1) 2.0)
+
+distance' ∷ ∀ u. Point u → Distance u
+distance' (Point { x, y }) = Distance.unsafeDistance $ Math.sqrt (x * x + y * y)
 
 foreign import linearTransform ∷ ∀ u. Linear.Matrix → Point u → Point u
 

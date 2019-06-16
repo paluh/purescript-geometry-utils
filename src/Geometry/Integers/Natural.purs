@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Foldable (class Foldable, length)
 import Data.Generic.Rep (class Generic)
-import Data.Int (toNumber)
+import Data.Int (toNumber) as Int
 import Data.Maybe (Maybe(..))
 import Data.Ord (abs) as Ord
 import Data.Typelevel.Num (class Nat, toInt')
@@ -34,11 +34,14 @@ unsafeNatural = Natural
 toInt ∷ Natural → Int
 toInt (Natural n) = n
 
+toNumber ∷ Natural → Number
+toNumber (Natural n) = Int.toNumber n
+
 foldableLength ∷ ∀ a f. Foldable f ⇒ f a → Natural
 foldableLength f = Natural $ length f
 
 toNonNegative ∷ Natural → NonNegative
-toNonNegative (Natural n) = NonNegative (toNumber n)
+toNonNegative (Natural n) = NonNegative (Int.toNumber n)
 
 abs ∷ Int → Natural
 abs i = Natural (Ord.abs i)

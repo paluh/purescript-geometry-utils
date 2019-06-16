@@ -8,6 +8,7 @@ import Data.Newtype (class Newtype)
 import Geometry.Distance (Distance, unsafeDistance, kind SpaceUnit)
 import Geometry.Distance.ConversionFactor (ConversionFactor(..))
 import Geometry.Numbers.Positive (Positive(..))
+import Geometry.Line.Transformations.Translation (Translation(..)) as Line.Transformations
 import Geometry.Plane.Point.Types (Point(..))
 import Geometry.Plane.Vector (Vector(..))
 import Math (sqrt) as Math
@@ -21,12 +22,24 @@ derive newtype instance monoidTranslation ∷ Monoid (Translation u)
 derive newtype instance groupTranslation ∷ Group (Translation u)
 
 fromPoints ∷ ∀ u. Point u → Point u → Translation u
-fromPoints (Point initial) (Point terminal) = Translation $ Vector $
-  { x: terminal.x - initial.x, y: terminal.y - initial.y }
+fromPoints (Point init) (Point term) = Translation $ Vector $
+  { x: term.x - init.x, y: term.y - init.y }
 
--- | Construct "position vector" which initial point lies in the origin
+-- | Construct "position vector" which initial point lies on the origin
 position ∷ ∀ u. Point u → Translation u
-position (Point terminal) = Translation (Vector terminal)
+position (Point t) = Translation (Vector t)
+
+position' ∷ ∀ u. Number → Number → Translation u
+position' x y = Translation (Vector { x, y })
+
+terminal ∷ ∀ u. Translation u → Point u
+terminal (Translation (Vector t)) = Point t
+
+_x ∷ ∀ u. Translation u → Line.Transformations.Translation u
+_x (Translation (Vector r)) = Line.Transformations.Translation r.x
+
+_y ∷ ∀ u. Translation u → Line.Transformations.Translation u
+_y (Translation (Vector r)) = Line.Transformations.Translation r.y
 
 length ∷ ∀ u. Translation u → Distance u
 length (Translation (Vector { x, y })) = unsafeDistance (Math.sqrt (x * x + y * y))
@@ -40,3 +53,4 @@ convert (ConversionFactor (Positive c)) (Translation (Vector { x, y })) =
 
 toVector ∷ ∀ u. Translation u → Vector
 toVector (Translation v) = v
+

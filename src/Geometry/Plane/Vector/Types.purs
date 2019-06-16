@@ -21,3 +21,9 @@ instance monoidVector ∷ Monoid Vector where
 instance groupVector ∷ Group Vector where
   ginverse (Vector { x, y }) = Vector { x: -x, y: -y }
 
+_x ∷ Vector → Number
+_x (Vector r) = r.x
+
+_y ∷ Vector → Number
+_y (Vector r) = r.y
+

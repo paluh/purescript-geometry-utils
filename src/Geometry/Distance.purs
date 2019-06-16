@@ -9,6 +9,7 @@ module Geometry.Distance
   , fromPositiveInt
   , fromPositiveNumber
   , toNonNegative
+  , toNumber
   , ratio
   , scale
   , unsafeDistance
@@ -61,6 +62,9 @@ fromNonNegative n = Distance n
 
 distance ∷ ∀ u. Number → Maybe (Distance u)
 distance = map Distance <<< Numbers.NonNegative.fromNumber
+
+toNumber ∷ ∀ u. Distance u → Number
+toNumber (Distance (NonNegative n)) = n
 
 unsafeDistance ∷ ∀ u. Number → Distance u
 unsafeDistance n = unsafeCoerce n

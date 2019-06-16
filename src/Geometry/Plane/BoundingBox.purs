@@ -8,8 +8,8 @@ import Data.Maybe (Maybe, fromJust)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
+import Geometry.Distance (convert, fromNonNegative, unsafeScale) as Distance
 import Geometry.Distance (fromNonNegative, kind SpaceUnit)
-import Geometry.Distance (convert, fromNonNegative) as Distance
 import Geometry.Distance.ConversionFactor (ConversionFactor(..))
 import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Numbers.NonNegative (abs, fromNumber) as NonNegative
@@ -86,15 +86,27 @@ fromBoundingCircle (Point { x, y }) (Distance r@(NonNegative rv)) = BoundingBox
   , width: Distance (r * (NonNegative 2.0))
   }
 
+originCentered ∷ ∀ u. { height ∷ Distance u, width ∷ Distance u } → BoundingBox u
+originCentered { height, width } =
+  let
+    Distance (NonNegative h) = height
+    Distance (NonNegative w) = width
+  in BoundingBox
+    { x: w / -2.0
+    , y: h / -2.0
+    , height
+    , width
+    }
+
 intersection ∷ ∀ u. BoundingBox u → BoundingBox u → Boolean
 intersection
   (BoundingBox r1@{ height: Distance (NonNegative h1), width: Distance (NonNegative w1) })
   (BoundingBox r2@{ height: Distance (NonNegative h2), width: Distance (NonNegative w2) }) = not
-    ( r2.x > r1.x + w1
-    || r1.x > r2.x + w2
-    || r2.y > r1.y + h1
-    || r1.y > r2.y + h2
-    )
+  ( r2.x > r1.x + w1
+  || r1.x > r2.x + w2
+  || r2.y > r1.y + h1
+  || r1.y > r2.y + h2
+  )
 
 corners
   ∷ ∀ u
@@ -108,15 +120,15 @@ corners (BoundingBox { x, y, height: Distance (NonNegative height), width: Dista
   }
 
 addPadding ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
-addPadding (Distance p@(NonNegative pv)) (BoundingBox bb@{ height: Distance h, width: Distance w}) =
+addPadding p@(Distance (NonNegative pv)) (BoundingBox bb@{ height, width, x, y }) =
   let
-    height = Distance $ NonNegative 2.0 * p + h
-    width = Distance $ NonNegative 2.0 * p + w
+    height' = (Distance.unsafeScale p 2.0) <> height
+    width' = (Distance.unsafeScale p 2.0) <> width
   in BoundingBox
-    { x: bb.x - pv
-    , y: bb.y - pv
-    , height
-    , width
+    { x: x - pv
+    , y: y - pv
+    , height: height'
+    , width: width'
     }
 
 center ∷ ∀ u. BoundingBox u → Point u
