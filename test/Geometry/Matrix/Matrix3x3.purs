@@ -2,7 +2,6 @@ module Test.Geometry.Matrix.Matrix3x3 where
 
 import Prelude
 
-import Geometry (kind SpaceUnit)
 import Geometry.Matrix.Matrix3x3 (Matrix)
 import Geometry.Matrix.Matrix3x3 (array, unsafe) as Matrix3x3
 import Geometry.Matrix.Matrix3x3 (unsafe) as Matrix

@@ -12,6 +12,7 @@ import Geometry.Distance (kind SpaceUnit)
 import Geometry.Matrix.Matrix3x3 (Matrix, unsafe) as Matrix3x3
 import Partial.Unsafe (unsafePartial)
 
+-- | Tranformation 3x3 matrix with unit tag
 newtype Matrix (u ∷ SpaceUnit) = Matrix (Array Number)
 derive instance eqMatrix ∷ Eq (Matrix u)
 -- | Required by test unit :-(
@@ -21,7 +22,7 @@ instance showMatrix ∷ Show (Matrix u) where
 -- | Affine matrices don't form a `Semiring` because
 -- | addition won't work on the last row...
 instance semigroupMatrix ∷ Semigroup (Matrix u) where
-  append = unsafeMul
+  append = multiply
 
 instance monoidMatrix ∷ Monoid (Matrix u) where
   mempty = Matrix [ 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0 ]
@@ -35,8 +36,8 @@ array (Matrix a) = a
 matrix3x3 ∷ ∀ u. Matrix u → Matrix3x3.Matrix
 matrix3x3 (Matrix m) = Matrix3x3.unsafe m
 
-unsafeMul ∷ ∀ u. Matrix u → Matrix u → Matrix u
-unsafeMul = unsafePartial $ case _, _ of
+multiply ∷ ∀ u. Matrix u → Matrix u → Matrix u
+multiply = unsafePartial $ case _, _ of
     Matrix [ a11, a12, a13, a21, a22, a23, a31, a32, a33 ]
   , Matrix [ b11, b12, b13 , b21, b22, b23 , _, _, b33 ] →
       Matrix

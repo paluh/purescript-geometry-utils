@@ -10,16 +10,15 @@ module Geometry.Plane.Point
 
 import Prelude
 
-import Geometry.Distance (Distance)
+import Geometry.Distance (ConversionFactor(..), Distance)
 import Geometry.Distance (unsafe) as Distance
-import Geometry.Distance.ConversionFactor (ConversionFactor(..))
 import Geometry.Matrix.Matrix2x2 (Matrix, array) as Matrix2x2
 import Geometry.Numbers.Positive (Positive(..))
 import Geometry.Plane.Point.Types (Point(..))
 import Geometry.Plane.Point.Types (_x, _y, _xD, _yD, point, Point(..)) as Types
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix) as Affine
 import Geometry.Plane.Transformations.Affine.Matrix (array) as Affine.Matrix
-import Geometry.Plane.Transformations.Translation (Translation(..))
+import Geometry.Plane.Transformations.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector.Types (Vector(..))
 import Math (pow, sqrt) as Math
 import Partial.Unsafe (unsafePartial)

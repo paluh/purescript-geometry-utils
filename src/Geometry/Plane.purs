@@ -8,6 +8,6 @@ module Geometry.Plane
 
 import Geometry.Plane.Point (point, Point(..)) as Point
 import Geometry.Plane.BoundingBox (BoundingBox(..)) as BoundingBox
-import Geometry.Plane.Transformations.Translation (Translation(..)) as Translation
+import Geometry.Plane.Transformations.Isometries.Translation (Translation(..)) as Translation
 import Geometry.Plane.Vector (Vector(..)) as Vector
 

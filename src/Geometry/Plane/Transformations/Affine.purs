@@ -11,7 +11,7 @@ import Geometry.Angle (Angle)
 import Geometry.Angle (cos, sin) as Angle
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix)
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix, unsafe) as Matrix
-import Geometry.Plane.Transformations.Translation (Translation(..))
+import Geometry.Plane.Transformations.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector.Types (Vector(..))
 
 translation ∷ ∀ u. Translation u → Matrix u
@@ -34,3 +34,4 @@ rotation a = Matrix.unsafe
   , Angle.sin a, Angle.cos a, 0.0
   , 0.0, 0.0, 1.0
   ]
+

@@ -1,13 +1,12 @@
-module Geometry.Plane.Transformations.Translation where
+module Geometry.Plane.Transformations.Isometries.Translation where
 
 import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
-import Geometry.Distance (Distance, kind SpaceUnit)
+import Geometry.Distance (ConversionFactor(..), Distance, kind SpaceUnit)
 import Geometry.Distance (unsafe) as Distance
-import Geometry.Distance.ConversionFactor (ConversionFactor(..))
 import Geometry.Line.Transformations.Translation (Translation(..)) as Line.Transformations
 import Geometry.Numbers.Positive (Positive(..))
 import Geometry.Plane.Point.Types (Point(..))
@@ -26,7 +25,8 @@ fromPoints ∷ ∀ u. Point u → Point u → Translation u
 fromPoints (Point init) (Point term) = Translation $ Vector $
   { x: term.x - init.x, y: term.y - init.y }
 
--- | Construct "position vector" which initial point lies on the origin
+-- | Construct translation as "position vector" which initial
+-- | point lies on the origin
 position ∷ ∀ u. Point u → Translation u
 position (Point t) = Translation (Vector t)
 
@@ -35,6 +35,9 @@ position' x y = Translation (Vector { x, y })
 
 terminal ∷ ∀ u. Translation u → Point u
 terminal (Translation (Vector t)) = Point t
+
+toVector ∷ ∀ u. Translation u → Vector
+toVector (Translation v) = v
 
 _x ∷ ∀ u. Translation u → Line.Transformations.Translation u
 _x (Translation (Vector r)) = Line.Transformations.Translation r.x
@@ -51,7 +54,4 @@ scale s (Translation (Vector { x, y })) = Translation (Vector { x: s * x, y: s *
 convert ∷ ∀ from to. ConversionFactor from to → Translation from → Translation to
 convert (ConversionFactor (Positive c)) (Translation (Vector { x, y })) =
   Translation (Vector { x: c * x, y: c * y })
-
-toVector ∷ ∀ u. Translation u → Vector
-toVector (Translation v) = v
 

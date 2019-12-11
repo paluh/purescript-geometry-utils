@@ -5,7 +5,6 @@ import Prelude
 import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
-import Geometry.Distance (kind SpaceUnit)
 
 newtype Vector = Vector { x ∷ Number, y ∷ Number }
 derive instance eqVector ∷ Eq Vector

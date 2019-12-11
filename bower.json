@@ -7,13 +7,13 @@
     "output"
   ],
   "dependencies": {
-    "purescript-prelude": "^4.1.0",
-    "purescript-math": "^2.1.1",
-    "purescript-group": "^4.0.0",
-    "purescript-arrays": "^5.2.0",
+    "purescript-arrays": "^5.3.1",
     "purescript-generics-rep": "^6.1.1",
-    "purescript-typelevel": "^5.0.0",
-    "purescript-integers": "^4.0.0"
+    "purescript-group": "^4.1.1",
+    "purescript-integers": "^4.0.0",
+    "purescript-math": "^2.1.1",
+    "purescript-prelude": "^4.1.1",
+    "purescript-typelevel": "^6.0.0"
   },
   "devDependencies": {
     "purescript-psci-support": "^4.0.0",

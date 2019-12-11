@@ -1,7 +1,5 @@
 module Geometry.Distance
-  ( module Units
-  , module ConversionFactor
-  , Distance(..)
+  ( module Types
   , convert
   , distance
   , fromNatural
@@ -19,12 +17,9 @@ module Geometry.Distance
 
 import Prelude
 
-import Data.Generic.Rep (class Generic)
 import Data.Maybe (Maybe)
-import Geometry.Distance.ConversionFactor (ConversionFactor(..))
-import Geometry.Distance.ConversionFactor (ConversionFactor) as ConversionFactor
-import Geometry.Distance.Units (kind SpaceUnit)
-import Geometry.Distance.Units (kind SpaceUnit) as Units
+import Geometry.Distance.Types (ConversionFactor(..), Distance(..))
+import Geometry.Distance.Types (ConversionFactor(..), Distance(..), kind SpaceUnit) as Types
 import Geometry.Integers (Natural, Positive) as Integers
 import Geometry.Integers.Natural (toNonNegative) as Integers.Natural
 import Geometry.Integers.Positive (toNatural) as Integers.Positive
@@ -34,19 +29,6 @@ import Geometry.Numbers.NonNegative (fromNumber, unsafe) as Numbers.NonNegative
 import Geometry.Numbers.Positive (toNonNegative) as Numbers.Positive
 import Geometry.Numbers.Positive (toNonNegative) as Positive
 import Unsafe.Coerce (unsafeCoerce)
-
--- | XXX: For every unit you should probably define your own
--- |  monomorphic constructor.
-newtype Distance (unit ∷ SpaceUnit) = Distance Numbers.NonNegative
-derive instance eqDistance ∷ Eq (Distance u)
-derive instance ordDistance ∷ Ord (Distance u)
-derive instance genericDistance ∷ Generic (Distance u) _
-
-instance semigroupDistance ∷ Semigroup (Distance u) where
-  append (Distance d1) (Distance d2) = Distance (d1 + d2)
-
-instance monoidDistance ∷ Monoid (Distance u) where
-  mempty = Distance zero
 
 fromNatural ∷ ∀ u. Integers.Natural → Distance u
 fromNatural n = Distance (Integers.Natural.toNonNegative n)

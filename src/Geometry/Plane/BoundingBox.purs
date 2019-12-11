@@ -1,4 +1,21 @@
-module Geometry.Plane.BoundingBox where
+module Geometry.Plane.BoundingBox
+  ( BoundingBox(..)
+  , addPadding
+  , aspectRatio
+  , center
+  , corners
+  , convert
+  , dimensions
+  , fromCorners
+  , fromPoints
+  , fromBoundingCircle
+  , intersection
+  , originCentered
+  , overlap
+  , translate
+  , module Exports
+  )
+  where
 
 import Prelude
 
@@ -9,21 +26,19 @@ import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
 import Geometry.Distance (convert, fromNonNegative, unsafeScale) as Distance
-import Geometry.Distance (fromNonNegative, kind SpaceUnit)
-import Geometry.Distance.ConversionFactor (ConversionFactor(..))
+import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
 import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Numbers.NonNegative (abs, fromNumber) as NonNegative
 import Geometry.Numbers.Positive (Positive(..))
+import Geometry.Plane.BoundingBox.AspectRatio (AspectRatio)
+import Geometry.Plane.BoundingBox.Dimensions (Dimensions)
+import Geometry.Plane.BoundingBox.Dimensions (Dimensions) as Exports
+import Geometry.Plane.BoundingBox.Dimensions (aspectRatio) as Dimensions
 import Geometry.Plane.Point (Point(..), _x, _y, point)
 import Geometry.Plane.Point (_x, _y) as Point
-import Geometry.Plane.Transformations.Translation (Translation(..))
+import Geometry.Plane.Transformations.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
 import Partial.Unsafe (unsafePartial)
-
-type Dimensions u =
-  { height ∷ Distance u
-  , width ∷ Distance u
-  }
 
 -- | XXX: Maybe this whole representation should be changed to something like:
 -- |  { position ∷ Point u, dimensions ∷ Dimensions u }
@@ -98,15 +113,26 @@ originCentered { height, width } =
     , width
     }
 
+-- intersect = meet or overlap
 intersection ∷ ∀ u. BoundingBox u → BoundingBox u → Boolean
 intersection
   (BoundingBox r1@{ height: Distance (NonNegative h1), width: Distance (NonNegative w1) })
   (BoundingBox r2@{ height: Distance (NonNegative h2), width: Distance (NonNegative w2) }) = not
-  ( r2.x > r1.x + w1
-  || r1.x > r2.x + w2
-  || r2.y > r1.y + h1
-  || r1.y > r2.y + h2
-  )
+    ( r2.x > r1.x + w1
+    || r1.x > r2.x + w2
+    || r2.y > r1.y + h1
+    || r1.y > r2.y + h2
+    )
+
+overlap ∷ ∀ u. BoundingBox u → BoundingBox u → Boolean
+overlap
+  (BoundingBox r1@{ height: Distance (NonNegative h1), width: Distance (NonNegative w1) })
+  (BoundingBox r2@{ height: Distance (NonNegative h2), width: Distance (NonNegative w2) }) = not
+    ( r2.x >= r1.x + w1
+    || r1.x >= r2.x + w2
+    || r2.y >= r1.y + h1
+    || r1.y >= r2.y + h2
+    )
 
 corners
   ∷ ∀ u
@@ -146,4 +172,10 @@ convert c@(ConversionFactor (Positive cv)) (BoundingBox { x, y, height, width })
   , height: Distance.convert c height
   , width: Distance.convert c width
   }
+
+dimensions ∷ ∀ u. BoundingBox u → Dimensions u
+dimensions (BoundingBox r) = { height: r.height, width: r.width }
+
+aspectRatio ∷ ∀ u. BoundingBox u → AspectRatio
+aspectRatio = dimensions >>> Dimensions.aspectRatio
 
