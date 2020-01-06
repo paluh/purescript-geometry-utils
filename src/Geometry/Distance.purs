@@ -11,6 +11,7 @@ module Geometry.Distance
   , ratio
   , scale
   , unsafe
+  , unsafeFromInt
   , unsafeScale
   )
   where
@@ -50,6 +51,9 @@ toNumber (Distance (NonNegative n)) = n
 
 unsafe ∷ ∀ u. Number → Distance u
 unsafe n = unsafeCoerce n
+
+unsafeFromInt ∷ ∀ u. Int → Distance u
+unsafeFromInt n = unsafeCoerce n
 
 toNonNegative ∷ ∀ u. Distance u → Numbers.NonNegative
 toNonNegative (Distance n) = n

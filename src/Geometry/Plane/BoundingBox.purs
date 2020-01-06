@@ -13,6 +13,7 @@ module Geometry.Plane.BoundingBox
   , originCentered
   , overlap
   , translate
+  , unsafe
   , module Exports
   )
   where
@@ -25,8 +26,8 @@ import Data.Maybe (Maybe, fromJust)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
-import Geometry.Distance (convert, fromNonNegative, unsafeScale) as Distance
 import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
+import Geometry.Distance (convert, fromNonNegative, unsafeScale) as Distance
 import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Numbers.NonNegative (abs, fromNumber) as NonNegative
 import Geometry.Numbers.Positive (Positive(..))
@@ -39,6 +40,7 @@ import Geometry.Plane.Point (_x, _y) as Point
 import Geometry.Plane.Transformations.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
 import Partial.Unsafe (unsafePartial)
+import Unsafe.Coerce (unsafeCoerce)
 
 -- | XXX: Maybe this whole representation should be changed to something like:
 -- |  { position ∷ Point u, dimensions ∷ Dimensions u }
@@ -51,6 +53,9 @@ newtype BoundingBox (u ∷ SpaceUnit) = BoundingBox
 derive instance eqBoundingBox ∷ Eq (BoundingBox u)
 derive instance genericBoundingBox ∷ Generic (BoundingBox u) _
 derive instance newtypeBoundingBox ∷ Newtype (BoundingBox u) _
+
+unsafe ∷ ∀ u. { x ∷ Number, y ∷ Number, height ∷ Number, width ∷ Number } → BoundingBox u
+unsafe = unsafeCoerce
 
 instance semigroup ∷ Semigroup (BoundingBox u) where
   append bb1 bb2 =

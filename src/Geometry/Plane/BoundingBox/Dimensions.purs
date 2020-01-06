@@ -21,6 +21,12 @@ aspectRatio { height: Distance (NonNegative h), width: Distance (NonNegative w) 
 unsafe ∷ ∀ u. { height ∷ Number, width ∷ Number } → Dimensions u
 unsafe = unsafeCoerce
 
+toNumbers ∷ ∀ u. Dimensions u → { height ∷ Number, width ∷ Number }
+toNumbers = unsafeCoerce
+
+unsafeFromInts ∷ ∀ u. { height ∷ Int, width ∷ Int } → Dimensions u
+unsafeFromInts = unsafeCoerce
+
 convert ∷ ∀ from to. ConversionFactor from to → Dimensions from → Dimensions to
 convert c@(ConversionFactor (Positive cv)) ({ height, width }) =
   { height: Distance.convert c height

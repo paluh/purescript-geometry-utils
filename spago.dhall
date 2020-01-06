@@ -10,6 +10,7 @@
     , "prelude"
     , "typelevel"
     , "test-unit"
+    , "unordered-collections"
     ]
 , packages = ../magusai/packages.dhall
 }
