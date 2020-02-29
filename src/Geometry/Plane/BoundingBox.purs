@@ -12,6 +12,7 @@ module Geometry.Plane.BoundingBox
   , intersection
   , originCentered
   , overlap
+  , point
   , translate
   , unsafe
   , module Exports
@@ -35,8 +36,8 @@ import Geometry.Plane.BoundingBox.AspectRatio (AspectRatio)
 import Geometry.Plane.BoundingBox.Dimensions (Dimensions)
 import Geometry.Plane.BoundingBox.Dimensions (Dimensions) as Exports
 import Geometry.Plane.BoundingBox.Dimensions (aspectRatio) as Dimensions
-import Geometry.Plane.Point (Point(..), _x, _y, point)
-import Geometry.Plane.Point (_x, _y) as Point
+import Geometry.Plane.Point (Point(..), _x, _y)
+import Geometry.Plane.Point (_x, _y, point) as Point
 import Geometry.Plane.Transformations.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
 import Partial.Unsafe (unsafePartial)
@@ -62,10 +63,10 @@ instance semigroup ∷ Semigroup (BoundingBox u) where
     let
       c1 = corners bb1
       c2 = corners bb2
-      leftTop = point
+      leftTop = Point.point
         (min (_x c1.leftTop) (_x c2.leftTop))
         (min (_y c1.leftTop) (_y c2.leftTop))
-      rightBottom = point
+      rightBottom = Point.point
         (max (_x c1.rightBottom) (_x c2.rightBottom))
         (max (_y c1.rightBottom) (_y c2.rightBottom))
     in
@@ -139,15 +140,17 @@ overlap
     || r1.y >= r2.y + h2
     )
 
+-- | XXX: We should probably reorganize module structure and use quadrilateral here...
+-- |      or just rename fields...
 corners
   ∷ ∀ u
   . BoundingBox u
   → { leftTop ∷ Point u , rightTop ∷ Point u, rightBottom ∷ Point u, leftBottom ∷ Point u }
 corners (BoundingBox { x, y, height: Distance (NonNegative height), width: Distance (NonNegative width) }) =
-  { leftTop: point x y
-  , rightTop: point (x + width) y
-  , rightBottom: point (x + width) (y + height)
-  , leftBottom: point x (y + height)
+  { leftTop: Point.point x y
+  , rightTop: Point.point (x + width) y
+  , rightBottom: Point.point (x + width) (y + height)
+  , leftBottom: Point.point x (y + height)
   }
 
 addPadding ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
@@ -164,7 +167,7 @@ addPadding p@(Distance (NonNegative pv)) (BoundingBox bb@{ height, width, x, y }
 
 center ∷ ∀ u. BoundingBox u → Point u
 center (BoundingBox { height: Distance (NonNegative height), width: Distance (NonNegative width), x, y }) =
-  point ( x + width / 2.0) (y + height / 2.0)
+  Point.point ( x + width / 2.0) (y + height / 2.0)
 
 translate ∷ ∀ u. Translation u → BoundingBox u → BoundingBox u
 translate (Translation (Vector v)) (BoundingBox bb) =
@@ -180,6 +183,9 @@ convert c@(ConversionFactor (Positive cv)) (BoundingBox { x, y, height, width })
 
 dimensions ∷ ∀ u. BoundingBox u → Dimensions u
 dimensions (BoundingBox r) = { height: r.height, width: r.width }
+
+point ∷ ∀ u. BoundingBox u → Point u
+point (BoundingBox { x, y }) = Point.point x y
 
 aspectRatio ∷ ∀ u. BoundingBox u → AspectRatio
 aspectRatio = dimensions >>> Dimensions.aspectRatio
