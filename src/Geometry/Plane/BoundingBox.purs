@@ -1,6 +1,12 @@
 module Geometry.Plane.BoundingBox
   ( BoundingBox(..)
+  , Percent(..)
   , addPadding
+  , addPadding'
+  , addPadding''
+  , addPercentPadding
+  , addPercentPadding'
+  , addPercentPadding''
   , aspectRatio
   , center
   , corners
@@ -28,9 +34,10 @@ import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
 import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
-import Geometry.Distance (convert, fromNonNegative, unsafeScale) as Distance
+import Geometry.Distance (convert, fromNonNegative, toNumber, scale, unsafeScale) as Distance
+import Geometry.Numbers (NonNegative)
 import Geometry.Numbers.NonNegative (NonNegative(..))
-import Geometry.Numbers.NonNegative (abs, fromNumber) as NonNegative
+import Geometry.Numbers.NonNegative (abs, fromNumber, unsafe) as NonNegative
 import Geometry.Numbers.Positive (Positive(..))
 import Geometry.Plane.BoundingBox.AspectRatio (AspectRatio)
 import Geometry.Plane.BoundingBox.Dimensions (Dimensions)
@@ -153,17 +160,58 @@ corners (BoundingBox { x, y, height: Distance (NonNegative height), width: Dista
   , leftBottom: Point.point x (y + height)
   }
 
-addPadding ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
-addPadding p@(Distance (NonNegative pv)) (BoundingBox bb@{ height, width, x, y }) =
+type Padding u =
+  { bottom ∷ u
+  , left ∷ u
+  , right ∷ u
+  , top ∷ u
+  }
+
+addPadding ∷ ∀ u. Padding (Distance u) → BoundingBox u → BoundingBox u
+addPadding { bottom, left, right, top } (BoundingBox bb@{ height, width, x, y }) =
   let
-    height' = (Distance.unsafeScale 2.0 p) <> height
-    width' = (Distance.unsafeScale 2.0 p) <> width
+    height' = top <> height <> bottom
+    width' = left <> width <> right
+    x' = x - Distance.toNumber left
+    y' = y - Distance.toNumber top
   in BoundingBox
-    { x: x - pv
-    , y: y - pv
+    { x: x'
+    , y: y'
     , height: height'
     , width: width'
     }
+
+addPadding' ∷ ∀ u. { horizontal ∷ Distance u, vertical ∷ Distance u } → BoundingBox u → BoundingBox u
+addPadding' { horizontal: hp, vertical: vp } =
+  addPadding { bottom: hp, left: vp, right: vp, top: hp }
+
+addPadding'' ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
+addPadding'' p@(Distance (NonNegative pv)) =
+  addPadding { bottom: p, left: p, right: p, top: p }
+
+newtype Percent = Percent NonNegative
+
+scaleByPercent ∷ ∀ u. Percent → Distance u → Distance u
+scaleByPercent (Percent p) = flip Distance.scale (p * NonNegative.unsafe 0.01)
+
+addPercentPadding ∷ ∀ u. Padding Percent → BoundingBox u → BoundingBox u
+addPercentPadding { bottom, left, right, top } boundingBox@(BoundingBox { height, width }) =
+  addPadding padding boundingBox
+  where
+    padding =
+      { bottom: scaleByPercent bottom height
+      , left: scaleByPercent left width
+      , right: scaleByPercent right width
+      , top: scaleByPercent top height
+      }
+
+addPercentPadding' ∷ ∀ u. { horizontal ∷ Percent, vertical ∷ Percent } → BoundingBox u → BoundingBox u
+addPercentPadding' { horizontal: hp, vertical: vp } =
+  addPercentPadding { bottom: hp, left: vp, right: vp, top: hp }
+
+addPercentPadding'' ∷ ∀ u. Percent → BoundingBox u → BoundingBox u
+addPercentPadding'' p =
+  addPercentPadding { bottom: p, left: p, right: p, top: p }
 
 center ∷ ∀ u. BoundingBox u → Point u
 center (BoundingBox { height: Distance (NonNegative height), width: Distance (NonNegative width), x, y }) =
@@ -189,4 +237,3 @@ point (BoundingBox { x, y }) = Point.point x y
 
 aspectRatio ∷ ∀ u. BoundingBox u → AspectRatio
 aspectRatio = dimensions >>> Dimensions.aspectRatio
-

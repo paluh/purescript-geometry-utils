@@ -32,7 +32,7 @@ fromBoundingBox ∷ ∀ u. BoundingBox u → Quadrilateral u
 fromBoundingBox (BoundingBox { x, y, height: Distance (NonNegative height), width: Distance (NonNegative width) }) =
   { first: point x y
   , second: point (x + width) y
-  , third: point (x + width) (y + width)
-  , fourth: point x (y + width)
+  , third: point (x + width) (y + height)
+  , fourth: point x (y + height)
   }
 

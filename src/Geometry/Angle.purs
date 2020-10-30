@@ -13,14 +13,16 @@ import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
+import Data.Newtype (class Newtype)
 import Math (Radians)
 import Math (cos, pi, sin) as Math
 
 newtype Angle = Angle Radians
+derive instance newtypeAngle ∷ Newtype Angle _
+derive instance genericAngle ∷ Generic Angle _
 
 instance eqAngle ∷ Eq Angle where
   eq (Angle r1) (Angle r2) = r1 == r2
-derive instance genericAngle ∷ Generic Angle _
 
 instance semigroupAngle ∷ Semigroup Angle where
   append (Angle r1) (Angle r2) = Angle (r1 + r2)
