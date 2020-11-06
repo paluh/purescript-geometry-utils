@@ -18,6 +18,9 @@ module Geometry.Plane.BoundingBox
   , intersection
   , originCentered
   , overlap
+  , Padding
+  , padding'
+  , padding''
   , point
   , translate
   , unsafe
@@ -34,8 +37,7 @@ import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
 import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
-import Geometry.Distance (convert, fromNonNegative, toNumber, scale, unsafeScale) as Distance
-import Geometry.Numbers (NonNegative)
+import Geometry.Distance (convert, fromNonNegative, scale, toNumber) as Distance
 import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Numbers.NonNegative (abs, fromNumber, unsafe) as NonNegative
 import Geometry.Numbers.Positive (Positive(..))
@@ -166,6 +168,12 @@ type Padding u =
   , right ∷ u
   , top ∷ u
   }
+
+padding' ∷ ∀ u. { horizontal ∷ u, vertical ∷ u } → Padding u
+padding' { horizontal, vertical } = { bottom: vertical, left: horizontal, right: horizontal, top: vertical }
+
+padding'' ∷ ∀ u. u → Padding u
+padding'' p = { bottom: p, left: p, right: p, top: p }
 
 addPadding ∷ ∀ u. Padding (Distance u) → BoundingBox u → BoundingBox u
 addPadding { bottom, left, right, top } (BoundingBox bb@{ height, width, x, y }) =
