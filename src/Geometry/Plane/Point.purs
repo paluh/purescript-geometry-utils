@@ -18,7 +18,7 @@ import Geometry.Plane.Point.Types (Point(..))
 import Geometry.Plane.Point.Types (_x, _y, _xD, _yD, point, Point(..)) as Types
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix) as Affine
 import Geometry.Plane.Transformations.Affine.Matrix (array) as Affine.Matrix
-import Geometry.Plane.Transformations.Isometries.Translation (Translation(..))
+import Geometry.Plane.Transformations.Affine.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector.Types (Vector(..))
 import Math (pow, sqrt) as Math
 import Partial.Unsafe (unsafePartial)

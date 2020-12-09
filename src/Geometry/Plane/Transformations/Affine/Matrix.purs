@@ -12,6 +12,7 @@ import Geometry.Distance (kind SpaceUnit)
 import Geometry.Matrix.Matrix3x3 (Matrix, unsafe) as Matrix3x3
 import Partial.Unsafe (unsafePartial)
 
+-- | TODO: Drop this and replace with `newtype Affine u = Affine (Matrix3x3.Matrix)
 -- | Tranformation 3x3 matrix with unit tag
 newtype Matrix (u ∷ SpaceUnit) = Matrix (Array Number)
 derive instance eqMatrix ∷ Eq (Matrix u)

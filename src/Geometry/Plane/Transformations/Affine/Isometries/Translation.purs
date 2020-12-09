@@ -1,4 +1,4 @@
-module Geometry.Plane.Transformations.Isometries.Translation where
+module Geometry.Plane.Transformations.Affine.Isometries.Translation where
 
 import Prelude
 

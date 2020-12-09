@@ -6,6 +6,8 @@ import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
 
+-- | TODO: add unit parameter here
+-- | as we only consider spacial vector here
 newtype Vector = Vector { x ∷ Number, y ∷ Number }
 derive instance eqVector ∷ Eq Vector
 derive instance genericVector ∷ Generic Vector _

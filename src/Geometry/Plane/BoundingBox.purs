@@ -47,7 +47,7 @@ import Geometry.Plane.BoundingBox.Dimensions (Dimensions) as Exports
 import Geometry.Plane.BoundingBox.Dimensions (aspectRatio) as Dimensions
 import Geometry.Plane.Point (Point(..), _x, _y)
 import Geometry.Plane.Point (_x, _y, point) as Point
-import Geometry.Plane.Transformations.Isometries.Translation (Translation(..))
+import Geometry.Plane.Transformations.Affine.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
 import Partial.Unsafe (unsafePartial)
 import Unsafe.Coerce (unsafeCoerce)
