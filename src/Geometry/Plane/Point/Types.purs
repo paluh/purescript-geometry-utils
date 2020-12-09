@@ -12,7 +12,7 @@ derive instance eqPoint ∷ Eq (Point u)
 derive instance genericPoint ∷ Generic (Point u) _
 derive instance newtypePoint ∷ Newtype (Point u) _
 instance showPoint ∷ Show (Point u) where
-  show (Point p) = "Point _" <> show p
+  show (Point p) = "(Point _ " <> show p <> ")"
 
 point ∷ ∀ u. Number → Number → Point u
 point x y = Point { x, y }
