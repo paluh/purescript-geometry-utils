@@ -28,8 +28,11 @@ natural n = if n >= 0
 reflectNat ∷ ∀ n. Nat n ⇒ Proxy n → Natural
 reflectNat = Natural <<< toInt'
 
-unsafeNatural ∷ Int → Natural
-unsafeNatural = Natural
+unsafe ∷ Int → Natural
+unsafe = Natural
+
+abs ∷ Int → Natural
+abs i = Natural (Ord.abs i)
 
 toInt ∷ Natural → Int
 toInt (Natural n) = n
@@ -43,5 +46,3 @@ foldableLength f = Natural $ length f
 toNonNegative ∷ Natural → NonNegative
 toNonNegative (Natural n) = NonNegative (Int.toNumber n)
 
-abs ∷ Int → Natural
-abs i = Natural (Ord.abs i)

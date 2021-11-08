@@ -1,17 +1,20 @@
-{ sources =
-    [ "src/**/*.purs", "test/**/*.purs" ]
+{ sources = [ "src/**/*.purs", "test/**/*.purs" ]
 , name = "geometry-utils"
 , dependencies =
-    [ "arrays"
-    , "generics-rep"
-    , "group"
-    , "integers"
-    , "math"
-    , "prelude"
-    , "typelevel"
-    , "test-unit"
-    , "unordered-collections"
-    ]
+  [ "arrays"
+  , "effect"
+  , "foldable-traversable"
+  , "group"
+  , "integers"
+  , "math"
+  , "maybe"
+  , "newtype"
+  , "partial"
+  , "prelude"
+  , "test-unit"
+  , "typelevel"
+  , "typelevel-prelude"
+  , "unsafe-coerce"
+  ]
 , packages = ../magusai/packages.dhall
 }
-
