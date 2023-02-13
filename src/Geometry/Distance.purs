@@ -20,7 +20,7 @@ import Prelude
 
 import Data.Maybe (Maybe)
 import Geometry.Distance.Types (ConversionFactor(..), Distance(..))
-import Geometry.Distance.Types (ConversionFactor(..), Distance(..), kind SpaceUnit) as Types
+import Geometry.Distance.Types (ConversionFactor(..), Distance(..), SpaceUnit) as Types
 import Geometry.Integers (Natural, Positive) as Integers
 import Geometry.Integers.Natural (toNonNegative) as Integers.Natural
 import Geometry.Integers.Positive (toNatural) as Integers.Positive

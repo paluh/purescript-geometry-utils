@@ -20,15 +20,15 @@ import Geometry.Plane.Transformations.Affine.Matrix (Matrix) as Affine
 import Geometry.Plane.Transformations.Affine.Matrix (array) as Affine.Matrix
 import Geometry.Plane.Transformations.Affine.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector.Types (Vector(..))
-import Math (pow, sqrt) as Math
+import Data.Number (pow, sqrt)
 import Partial.Unsafe (unsafePartial)
 
 distance ∷ ∀ u. Point u → Point u → Distance u
 distance (Point { x: x1, y: y1 }) (Point { x: x2, y: y2 }) =
-  Distance.unsafe $ Math.sqrt (Math.pow (x2 - x1) 2.0 + Math.pow (y2 - y1) 2.0)
+  Distance.unsafe $ sqrt (pow (x2 - x1) 2.0 + pow (y2 - y1) 2.0)
 
 distance' ∷ ∀ u. Point u → Distance u
-distance' (Point { x, y }) = Distance.unsafe $ Math.sqrt (x * x + y * y)
+distance' (Point { x, y }) = Distance.unsafe $ sqrt (x * x + y * y)
 
 linearTransform ∷ ∀ u. Matrix2x2.Matrix → Point u → Point u
 linearTransform m (Point { x, y }) = unsafePartial $

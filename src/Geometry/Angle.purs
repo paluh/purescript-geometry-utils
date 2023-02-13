@@ -1,5 +1,6 @@
 module Geometry.Angle
   ( Angle(..)
+  , Radians
   , cos
   , fromDegrees
   , pi
@@ -14,8 +15,9 @@ import Prelude
 import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
-import Math (Radians)
-import Math (cos, pi, sin) as Math
+import Data.Number (cos, pi, sin) as Math
+
+type Radians = Number
 
 newtype Angle = Angle Radians
 derive instance newtypeAngle ∷ Newtype Angle _

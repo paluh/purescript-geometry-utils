@@ -5,13 +5,13 @@ import Prelude
 import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
-import Geometry.Distance (ConversionFactor(..), Distance, kind SpaceUnit)
+import Geometry.Distance (ConversionFactor(..), Distance, SpaceUnit)
 import Geometry.Distance (unsafe) as Distance
 import Geometry.Line.Transformations.Translation (Translation(..)) as Line.Transformations
 import Geometry.Numbers.Positive (Positive(..))
 import Geometry.Plane.Point.Types (Point(..))
 import Geometry.Plane.Vector (Vector(..))
-import Math (sqrt) as Math
+import Data.Number (sqrt)
 
 newtype Translation (u ∷ SpaceUnit) = Translation Vector
 derive instance eqTranslation ∷ Eq (Translation u)
@@ -46,7 +46,7 @@ _y ∷ ∀ u. Translation u → Line.Transformations.Translation u
 _y (Translation (Vector r)) = Line.Transformations.Translation r.y
 
 length ∷ ∀ u. Translation u → Distance u
-length (Translation (Vector { x, y })) = Distance.unsafe (Math.sqrt (x * x + y * y))
+length (Translation (Vector { x, y })) = Distance.unsafe (sqrt (x * x + y * y))
 
 scale ∷ ∀ u. Number → Translation u → Translation u
 scale s (Translation (Vector { x, y })) = Translation (Vector { x: s * x, y: s * y })

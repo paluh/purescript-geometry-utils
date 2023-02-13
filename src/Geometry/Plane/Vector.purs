@@ -12,13 +12,13 @@ import Prelude
 import Data.Maybe (Maybe(..))
 import Geometry.Plane.Vector.Types (Vector(..))
 import Geometry.Plane.Vector.Types (Vector(..), _x, _y) as Types
-import Math (sqrt) as Math
+import Data.Number (sqrt)
 
 vector ∷ Number → Number → Vector
 vector x y = Vector { x, y }
 
 length ∷ Vector → Number
-length (Vector { x, y }) = Math.sqrt (x * x + y * y)
+length (Vector { x, y }) = sqrt (x * x + y * y)
 
 scale ∷ Number → Vector → Vector
 scale s (Vector { x, y }) = vector (s * x) (s * y)

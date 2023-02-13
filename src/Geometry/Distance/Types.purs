@@ -1,7 +1,7 @@
 module Geometry.Distance.Types
   ( ConversionFactor(..)
   , Distance(..)
-  , kind SpaceUnit
+  , SpaceUnit
   )
   where
 
@@ -12,7 +12,7 @@ import Data.Newtype (class Newtype)
 import Geometry.Numbers (NonNegative) as Numbers
 import Geometry.Numbers.Positive (Positive)
 
-foreign import kind SpaceUnit
+foreign import data SpaceUnit :: Type
 
 -- | XXX: For every unit you should probably define your own
 -- |  monomorphic constructor.

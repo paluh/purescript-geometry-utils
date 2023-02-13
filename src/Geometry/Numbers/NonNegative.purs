@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Maybe (Maybe(..))
 import Data.Ord (abs) as Ord
-import Math (sqrt) as Math
+import Data.Number (sqrt) as Number
 
 newtype NonNegative = NonNegative Number
 derive instance eqNonNegative :: Eq NonNegative
@@ -28,4 +28,4 @@ abs ∷ Number → NonNegative
 abs n = NonNegative (Ord.abs n)
 
 sqrt ∷ NonNegative → NonNegative
-sqrt (NonNegative n) = NonNegative (Math.sqrt n)
+sqrt (NonNegative n) = NonNegative (Number.sqrt n)

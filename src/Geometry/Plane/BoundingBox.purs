@@ -36,7 +36,7 @@ import Data.Maybe (Maybe, fromJust)
 import Data.Newtype (class Newtype)
 import Data.Semigroup.Foldable (maximum, minimum)
 import Geometry (Distance(..))
-import Geometry.Distance (ConversionFactor(..), fromNonNegative, kind SpaceUnit)
+import Geometry.Distance (ConversionFactor(..), fromNonNegative, SpaceUnit)
 import Geometry.Distance (convert, fromNonNegative, scale, toNumber) as Distance
 import Geometry.Numbers.NonNegative (NonNegative(..))
 import Geometry.Numbers.NonNegative (abs, fromNumber, unsafe) as NonNegative
@@ -176,7 +176,7 @@ padding'' ∷ ∀ u. u → Padding u
 padding'' p = { bottom: p, left: p, right: p, top: p }
 
 addPadding ∷ ∀ u. Padding (Distance u) → BoundingBox u → BoundingBox u
-addPadding { bottom, left, right, top } (BoundingBox bb@{ height, width, x, y }) =
+addPadding { bottom, left, right, top } (BoundingBox { height, width, x, y }) =
   let
     height' = top <> height <> bottom
     width' = left <> width <> right
@@ -194,7 +194,7 @@ addPadding' { horizontal: hp, vertical: vp } =
   addPadding { bottom: hp, left: vp, right: vp, top: hp }
 
 addPadding'' ∷ ∀ u. Distance u → BoundingBox u → BoundingBox u
-addPadding'' p@(Distance (NonNegative pv)) =
+addPadding'' p =
   addPadding { bottom: p, left: p, right: p, top: p }
 
 newtype Percent = Percent NonNegative

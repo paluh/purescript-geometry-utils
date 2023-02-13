@@ -6,7 +6,7 @@ module Geometry.Plane.Transformations.Affine.Matrix
   ) where
 
 import Prelude
-import Geometry.Distance (kind SpaceUnit)
+import Geometry.Distance (SpaceUnit)
 import Geometry.Matrix.Matrix3x3 (Matrix, unsafe) as Matrix3x3
 import Partial.Unsafe (unsafePartial)
 

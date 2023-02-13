@@ -6,7 +6,7 @@ module Geometry.Plane.Transformations.Affine.Isometries
 
 import Prelude
 
-import Geometry.Distance (kind SpaceUnit)
+import Geometry.Distance (SpaceUnit)
 import Geometry.Plane.Transformations.Affine.Matrix (Matrix)
 import Geometry.Plane.Transformations.Affine.Matrix (unsafe) as Matrix
 import Geometry.Plane.Vector (Vector(..))

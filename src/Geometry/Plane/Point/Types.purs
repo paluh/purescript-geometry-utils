@@ -4,7 +4,7 @@ import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Data.Newtype (class Newtype)
-import Geometry.Distance (Distance(..), kind SpaceUnit)
+import Geometry.Distance (Distance(..), SpaceUnit)
 import Geometry.Numbers.NonNegative (abs) as NonNegative
 
 newtype Point (unit ∷ SpaceUnit) = Point { x ∷ Number, y ∷ Number }

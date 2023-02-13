@@ -2,7 +2,7 @@ module Test.Geometry.Plane.Transformations.Affine where
 
 import Prelude
 
-import Geometry (kind SpaceUnit)
+import Geometry (SpaceUnit)
 import Geometry.Plane.Transformations.Affine.Matrix (unsafe) as Matrix
 import Test.Unit (TestSuite)
 import Test.Unit (suite, test) as Test
