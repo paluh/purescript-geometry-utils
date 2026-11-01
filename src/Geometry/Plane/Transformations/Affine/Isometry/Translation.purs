@@ -1,0 +1,56 @@
+module Geometry.Plane.Transformations.Affine.Isometry.Translation where
+
+-- import Prelude
+-- 
+-- import Data.Generic.Rep (class Generic)
+-- import Data.Group (class Group)
+-- import Data.Newtype (class Newtype)
+-- import Geometry.Distance (ConversionFactor(..), Distance, SpaceUnit)
+-- import Geometry.Distance (unsafe) as Distance
+-- import Geometry.Line.Transformations.Translation (Translation(..)) as Line.Transformations
+-- import Geometry.Numbers.Positive (Positive(..))
+-- import Geometry.Plane.Point.Types (Point(..))
+-- import Geometry.Plane.Vector (Vector(..))
+-- import Data.Number (sqrt)
+-- 
+-- type Translation u = Vector u
+-- -- -- TODO: Now we have a type parameter in the `Vector`. Can we just drop this wrapper?
+-- -- newtype Translation (u ∷ SpaceUnit) = Translation (Vector u)
+-- -- derive instance eqTranslation ∷ Eq (Translation u)
+-- -- derive instance genericTranslation ∷ Generic (Translation u) _
+-- -- derive instance newtypeTranslation ∷ Newtype (Translation u) _
+-- -- derive newtype instance semigroupTranslation ∷ Semigroup (Translation u)
+-- -- derive newtype instance monoidTranslation ∷ Monoid (Translation u)
+-- -- derive newtype instance groupTranslation ∷ Group (Translation u)
+-- 
+-- fromPoints ∷ ∀ u. Point u → Point u → Translation u
+-- fromPoints (Point init) (Point term) = Vector $
+--   { x: term.x - init.x, y: term.y - init.y }
+-- 
+-- -- | Construct translation as "position vector" which initial
+-- -- | point lies on the origin
+-- position ∷ ∀ u. Point u → Translation u
+-- position (Point t) = Vector t
+-- 
+-- position' ∷ ∀ u. Number → Number → Translation u
+-- position' x y = Vector { x, y }
+-- 
+-- terminal ∷ ∀ u. Translation u → Point u
+-- terminal (Vector t) = Point t
+-- 
+-- _x ∷ ∀ u. Translation u → Line.Transformations.Translation u
+-- _x (Vector r) = Line.Transformations.Translation r.x
+-- 
+-- _y ∷ ∀ u. Translation u → Line.Transformations.Translation u
+-- _y (Vector r) = Line.Transformations.Translation r.y
+-- 
+-- length ∷ ∀ u. Translation u → Distance u
+-- length (Vector { x, y }) = Distance.unsafe (sqrt (x * x + y * y))
+-- 
+-- scale ∷ ∀ u. Number → Translation u → Translation u
+-- scale s (Vector { x, y }) = Translation (Vector { x: s * x, y: s * y })
+-- 
+-- convert ∷ ∀ from to. ConversionFactor from to → Translation from → Translation to
+-- convert (ConversionFactor (Positive c)) (Translation (Vector { x, y })) =
+--   Translation (Vector { x: c * x, y: c * y })
+
