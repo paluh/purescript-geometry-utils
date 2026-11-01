@@ -6,25 +6,28 @@ import Data.Generic.Rep (class Generic)
 import Data.Group (class Group)
 import Data.Newtype (class Newtype)
 
--- | TODO: add unit parameter here
--- | as we only consider spacial vector here
-newtype Vector = Vector { x ∷ Number, y ∷ Number }
-derive instance eqVector ∷ Eq Vector
-derive instance genericVector ∷ Generic Vector _
-derive instance newtypeVector ∷ Newtype Vector _
+newtype Vector :: forall k. k -> Type
+newtype Vector u = Vector { x ∷ Number, y ∷ Number }
 
-instance semigroupVector ∷ Semigroup Vector where
-  append (Vector v1) (Vector v2) = Vector { x: v1.x + v2.x, y: v1.y + v2.y }
+derive instance Eq (Vector u)
+derive instance Generic (Vector u) _
+derive instance Newtype (Vector u) _
 
-instance monoidVector ∷ Monoid Vector where
+instance Semigroup (Vector u) where
+  append (Vector v1) (Vector v2) = do
+    let
+      (v :: Vector u) = Vector { x: v1.x + v2.x, y: v1.y + v2.y }
+    v
+
+instance Monoid (Vector u) where
   mempty = Vector { x: 0.0, y: 0.0 }
 
-instance groupVector ∷ Group Vector where
+instance Group (Vector u) where
   ginverse (Vector { x, y }) = Vector { x: -x, y: -y }
 
-_x ∷ Vector → Number
+_x ∷ forall u. Vector u → Number
 _x (Vector r) = r.x
 
-_y ∷ Vector → Number
+_y ∷ forall u. Vector u → Number
 _y (Vector r) = r.y
 

@@ -3,7 +3,7 @@ module Test.Geometry.Plane.Transformations.Affine where
 import Prelude
 
 import Geometry (SpaceUnit)
-import Geometry.Plane.Transformations.Affine.Matrix (unsafe) as Matrix
+import Geometry.Plane.Transformations.Affine (unsafeFromArray) as Affine
 import Test.Unit (TestSuite)
 import Test.Unit (suite, test) as Test
 import Test.Unit.Assert (equal) as Assert
@@ -13,7 +13,7 @@ foreign import data Scene ∷ SpaceUnit
 suite ∷ TestSuite
 suite = Test.suite "Geometry.Plane.Transformations.Affine" do
   let
-    m = Matrix.unsafe
+    m = Affine.unsafeFromArray
       [ 1.0, 2.0, 3.0
       , 4.0, 5.0, 6.0
       , 0.0, 0.0, 1.0
@@ -25,6 +25,6 @@ suite = Test.suite "Geometry.Plane.Transformations.Affine" do
   Test.test "multiplication" do
     let
       r = m <> m
-      expected = Matrix.unsafe
+      expected = Affine.unsafeFromArray
         [ 9.0, 12.0, 18.0, 24.0, 33.0, 48.0, 0.0, 0.0, 1.0 ]
     Assert.equal expected r

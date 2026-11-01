@@ -12,6 +12,7 @@
   , "partial"
   , "prelude"
   , "test-unit"
+  , "tuples"
   , "typelevel"
   , "typelevel-prelude"
   , "unsafe-coerce"

@@ -2,9 +2,13 @@ module Geometry.Matrix.Matrix2x2 where
 
 import Prelude
 
+import Data.Maybe (Maybe(..))
+import Data.Tuple.Nested (type (/\), (/\))
 import Partial.Unsafe (unsafePartial)
 
+-- [ a11, a12, a21, a22 ]
 newtype Matrix = Matrix (Array Number)
+
 derive instance eqMatrix ∷ Eq Matrix
 instance showMatrix ∷ Show Matrix where
   show (Matrix m) = "(Matrix " <> show m <> ")"
@@ -21,8 +25,8 @@ instance ringMatrix ∷ Ring Matrix where
 unsafe ∷ Array Number → Matrix
 unsafe = Matrix
 
-array ∷ Matrix → Array Number
-array (Matrix a) = a
+toArray ∷ Matrix → Array Number
+toArray (Matrix a) = a
 
 unsafeAdd ∷ Matrix → Matrix → Matrix
 unsafeAdd = unsafePartial $ case _, _ of
@@ -42,7 +46,6 @@ unsafeSub = unsafePartial $ case _, _ of
         , a21 - b21, a22 - b22
         ]
 
-
 unsafeMul ∷ Matrix → Matrix → Matrix
 unsafeMul = unsafePartial $ case _, _ of
     Matrix [ a11, a12, a21, a22 ]
@@ -54,4 +57,20 @@ unsafeMul = unsafePartial $ case _, _ of
           , a21 * b11 + a22 * b21
           , a21 * b12 + a22 * b22
           ]
+
+inverse ∷ Matrix → Maybe Matrix
+inverse = unsafePartial $ case _ of
+  Matrix [ a11, a12, a21, a22 ] → do
+    let
+      det = a11 * a22 - a12 * a21
+    if det == 0.0
+      then Nothing
+      else Just $ Matrix
+        [ a22 / det, -a12 / det
+        , -a21 / det, a11 / det
+        ]
+
+toElements :: Matrix -> Number /\ Number /\ Number /\ Number
+toElements (Matrix m) = unsafePartial $ case m of
+  [ a11, a12, a21, a22 ] -> a11 /\ a12 /\ a21 /\ a22
 

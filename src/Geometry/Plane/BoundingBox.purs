@@ -8,6 +8,7 @@ module Geometry.Plane.BoundingBox
   , addPercentPadding'
   , addPercentPadding''
   , aspectRatio
+  , boundingBox
   , center
   , corners
   , convert
@@ -47,7 +48,6 @@ import Geometry.Plane.BoundingBox.Dimensions (Dimensions) as Exports
 import Geometry.Plane.BoundingBox.Dimensions (aspectRatio) as Dimensions
 import Geometry.Plane.Point (Point(..), _x, _y)
 import Geometry.Plane.Point (_x, _y, point) as Point
-import Geometry.Plane.Transformations.Affine.Isometries.Translation (Translation(..))
 import Geometry.Plane.Vector (Vector(..))
 import Partial.Unsafe (unsafePartial)
 import Unsafe.Coerce (unsafeCoerce)
@@ -114,6 +114,14 @@ fromBoundingCircle (Point { x, y }) (Distance r@(NonNegative rv)) = BoundingBox
   , y: y - rv
   , height: Distance (r * (NonNegative 2.0))
   , width: Distance (r * (NonNegative 2.0))
+  }
+
+boundingBox :: forall u. Point u -> Dimensions u -> BoundingBox u
+boundingBox (Point { x, y }) { height, width } = BoundingBox
+  { x
+  , y
+  , height
+  , width
   }
 
 originCentered ∷ ∀ u. { height ∷ Distance u, width ∷ Distance u } → BoundingBox u
@@ -225,8 +233,8 @@ center ∷ ∀ u. BoundingBox u → Point u
 center (BoundingBox { height: Distance (NonNegative height), width: Distance (NonNegative width), x, y }) =
   Point.point ( x + width / 2.0) (y + height / 2.0)
 
-translate ∷ ∀ u. Translation u → BoundingBox u → BoundingBox u
-translate (Translation (Vector v)) (BoundingBox bb) =
+translate ∷ ∀ u. Vector u → BoundingBox u → BoundingBox u
+translate (Vector v) (BoundingBox bb) =
   BoundingBox (bb { x = bb.x + v.x, y = bb.y + v.y })
 
 convert ∷ ∀ from to. ConversionFactor from to → BoundingBox from → BoundingBox to

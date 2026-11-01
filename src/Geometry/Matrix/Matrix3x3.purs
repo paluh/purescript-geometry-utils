@@ -1,6 +1,6 @@
 module Geometry.Matrix.Matrix3x3
   ( Matrix
-  , array
+  , toArray
   , unsafe
   )
   where
@@ -23,8 +23,8 @@ instance semiringMatrix ∷ Semiring Matrix where
 instance ringMatrix ∷ Ring Matrix where
   sub = unsafeSub
 
-array ∷ Matrix → Array Number
-array (Matrix a) = a
+toArray ∷ Matrix → Array Number
+toArray (Matrix a) = a
 
 unsafe ∷ Array Number → Matrix
 unsafe = Matrix

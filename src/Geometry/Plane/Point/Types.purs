@@ -4,14 +4,17 @@ import Prelude
 
 import Data.Generic.Rep (class Generic)
 import Data.Newtype (class Newtype)
+import Data.Tuple.Nested ((/\))
 import Geometry.Distance (Distance(..), SpaceUnit)
 import Geometry.Numbers.NonNegative (abs) as NonNegative
 
 newtype Point (unit ∷ SpaceUnit) = Point { x ∷ Number, y ∷ Number }
-derive instance eqPoint ∷ Eq (Point u)
-derive instance genericPoint ∷ Generic (Point u) _
-derive instance newtypePoint ∷ Newtype (Point u) _
-instance showPoint ∷ Show (Point u) where
+derive instance Eq (Point u)
+instance Ord (Point u) where
+  compare (Point p1) (Point p2) = compare (p1.x /\ p1.y) (p2.x /\ p2.y)
+derive instance Generic (Point u) _
+derive instance Newtype (Point u) _
+instance Show (Point u) where
   show (Point p) = "(Point _ " <> show p <> ")"
 
 point ∷ ∀ u. Number → Number → Point u
